@@ -153,7 +153,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://muxiaolana.github.io/2017/08/26/jquery获取url参数的方法/" data-id="cj6q8kld80005yr3ks9hb6h95" class="article-share-link">Share</a>
+      <a data-url="http://muxiaolana.github.io/2017/08/26/jquery获取url参数的方法/" data-id="cj6q9sz9t000a953kyuobxe9v" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -237,7 +237,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://muxiaolana.github.io/2017/08/16/jquery.extend函数使用/" data-id="cj6q8kld20004yr3kddegcu9n" class="article-share-link">Share</a>
+      <a data-url="http://muxiaolana.github.io/2017/08/16/jquery.extend函数使用/" data-id="cj6q9sz950001953ka8997ofk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -787,7 +787,101 @@ $.fn.tableScroll.defaults =
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://muxiaolana.github.io/2017/07/16/原生table的表头固定内容滚动/" data-id="cj6q8kle3000xyr3ksgxdncd3" class="article-share-link">Share</a>
+      <a data-url="http://muxiaolana.github.io/2017/07/16/原生table的表头固定内容滚动/" data-id="cj6q9sza8000x953k759yyqm8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-onchange事件与target" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/06/onchange事件与target/" class="article-date">
+  <time datetime="2017-07-06T15:52:06.000Z" itemprop="datePublished">2017-07-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>注意：此实例需要引入jquery文件</strong></p>
+<p> 请输入拆案份数：<input type="text" id="CaseScore"><button>确定</button></p>
+<p><style><br> table{border-top:1px solid #eee;border-right:1px solid #eee;}<br> table th{border-top:none;border-right:none;}<br></style></p>
+<table id="liTable"><br>    <thead><br>        <th></th><br>        <th>户数</th><br>        <th>比例</th><br>    </thead><br>    <tbody><br>    <tr><br>        <th><input type="checkbox"></th><br>        <th><input type="text"></th><br>        <th><input type="text">%</th><br>    </tr><br>    </tbody><br></table>
+
+<p><em><span style="color:red">需求介绍：在上面的input框中输入拆分的份数，点击确定，下边的table中tbody显示与输入数字对应的行数。在分案总数一定的情况下，在“户数”栏填写户数，“比例栏”自动显示占分按总数的比例，反之亦然。</span></em></p>
+<p>逻辑分析：输入拆分份数（input的value）&gt;点击确定&gt;循环&gt;dom操作生成新的tr（<strong>tr中包含的两个input在id或者class类名中一定要有有别于其他，但一定要一致的部分</strong>）&gt;tr中的input（第一个）发生onchange时间的时候（注：输入必须为大于0的数字），计算当前输入数目占总数的比例&gt;将所得比例赋值给input（第二个）；</p>
+<p><strong>这个需求本身的难点在于，在一组而且是不固定数目的input中每次onchange的时候，如果用this或者$(this)来获取事件源，由于this会一直冒泡到window，显示的事件源即为window，不能实现onchange事件的来源定位，而event.target(或event.srcElement)没有冒泡，可以实现准确定位事件源，所以这里要用event.target(或event.srcElement)，因为是在jquery中，所以写为$(event.target)||$(event.srcElement)</strong></p>
+<p>html部分：</p>
+<pre><code>&lt;span&gt;请输入拆分份数:&lt;/span&gt;
+&lt;input type=&quot;text&quot; id=&quot;houseNum&quot;/&gt;&lt;button onclick=&quot;SplitFraction()&quot;&gt;确定&lt;/button&gt;
+&lt;table class=&quot;listTable&quot; style=&quot;width:50%;&quot;&gt;
+            &lt;thead&gt;
+                &lt;td&gt;&lt;/td&gt;
+                &lt;td&gt;编号&lt;/td&gt;
+                &lt;td&gt;户数&lt;/td&gt;
+                &lt;td&gt;比例&lt;/td&gt;
+            &lt;/thead&gt;
+            &lt;tbody id=&quot;splitList&quot;&gt;
+
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+</code></pre><p>js部分:<br><br>dom生成tbody部分，代码如下：</p>
+<pre><code>function SplitFraction(){    
+var sPlitParts = parseInt($(&apos;#houseNum&apos;).val());
+count = sPlitParts;
+     for(var i=0;i&lt;sPlitParts;i++){
+        $(&apos;#splitList&apos;).append(&quot;&lt;tr&gt;&lt;td&gt;&lt;input type=&apos;checkbox&apos;  id=&apos;No&quot;+(i+1)+&quot;&apos;/&gt;&lt;/td&gt;&lt;td&gt;&quot;+(i+1)+&quot;&lt;/td&gt;&lt;td&gt;&lt;input type=&apos;text&apos;  onchange=&apos;changeValue(event)&apos; id=&apos;hNum&quot;+(i+1)+&quot;&apos;/&gt;&lt;/td&gt;&lt;td&gt;&lt;input type=&apos;text&apos; onchange=&apos;changeNum(event)&apos;   id=&apos;Proportion&quot;+(i+1)+&quot;&apos;/&gt;%&lt;/td&gt;&lt;/tr&gt;&quot;);
+    }  
+}//循环当中每次生成的两个input的id分别为#hNum(i+1)和#Proportion(i+1);
+</code></pre><p>假设：分案总额为100,即：</p>
+<pre><code>var jiashuju = 100;
+</code></pre><p>input发生onchange事件时：</p>
+<p>如果是“户数”栏里的input（注：id为hNum+（i+1）），执行函数为：changeValue(event)，代码如下：</p>
+<pre><code>function changeValue(event){
+ var x = $(event.target)||$(event.srcElement); 
+ var val = (x.val())/jiashuju*100;  
+ var tem = (x.attr(&apos;id&apos;)).substring(4);
+ $(&apos;#Proportion&apos;+tem).val(val);
+} 
+</code></pre><p>  如果是“比例”栏里的input（注：id为Proportion+（i+1）），执行函数为：changeNum(event)，代码如下：</p>
+<pre><code>function changeNum(event){
+var y = $(event.target)||$(event.srcElement);
+var Num = (y.val())/100*jiashuju;
+var tem2 = (y.attr(&apos;id&apos;)).substring(10);
+$(&apos;#hNum&apos;+tem2).val(Num);
+}
+</code></pre><p>本案例考察的知识点有：onchange事件，string拼接，dom操作，substring字符串截取，事件冒泡，获取事件源，event.target与event.srcElement的兼容性。</p>
+<p><strong>event.target与event.srcElement的使用范围：</strong></p>
+<p>IE下,event对象有srcElement属性,但是没有target属性;Firefox下,event对象有target属性,但是没有srcElement属性.但他们的作用是相当的，即：</p>
+<p>firefox 下的 event.target = IE 下的 event.srcElement</p>
+<p>解决方法:使用obj(obj = event.srcElement ? event.srcElement : event.target;)来代替IE下的event.srcElement或者Firefox下的event.target.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2017/07/06/onchange事件与target/" data-id="cj6q9sz9o0005953kntshpwlu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -937,101 +1031,7 @@ function grow(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://muxiaolana.github.io/2017/07/06/js4种内存泄漏陷阱/" data-id="cj6q8kldo000ayr3kbmwu9sk0" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-onchange事件与target" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/07/06/onchange事件与target/" class="article-date">
-  <time datetime="2017-07-06T15:52:06.000Z" itemprop="datePublished">2017-07-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>注意：此实例需要引入jquery文件</strong></p>
-<p> 请输入拆案份数：<input type="text" id="CaseScore"><button>确定</button></p>
-<p><style><br> table{border-top:1px solid #eee;border-right:1px solid #eee;}<br> table th{border-top:none;border-right:none;}<br></style></p>
-<table id="liTable"><br>    <thead><br>        <th></th><br>        <th>户数</th><br>        <th>比例</th><br>    </thead><br>    <tbody><br>    <tr><br>        <th><input type="checkbox"></th><br>        <th><input type="text"></th><br>        <th><input type="text">%</th><br>    </tr><br>    </tbody><br></table>
-
-<p><em><span style="color:red">需求介绍：在上面的input框中输入拆分的份数，点击确定，下边的table中tbody显示与输入数字对应的行数。在分案总数一定的情况下，在“户数”栏填写户数，“比例栏”自动显示占分按总数的比例，反之亦然。</span></em></p>
-<p>逻辑分析：输入拆分份数（input的value）&gt;点击确定&gt;循环&gt;dom操作生成新的tr（<strong>tr中包含的两个input在id或者class类名中一定要有有别于其他，但一定要一致的部分</strong>）&gt;tr中的input（第一个）发生onchange时间的时候（注：输入必须为大于0的数字），计算当前输入数目占总数的比例&gt;将所得比例赋值给input（第二个）；</p>
-<p><strong>这个需求本身的难点在于，在一组而且是不固定数目的input中每次onchange的时候，如果用this或者$(this)来获取事件源，由于this会一直冒泡到window，显示的事件源即为window，不能实现onchange事件的来源定位，而event.target(或event.srcElement)没有冒泡，可以实现准确定位事件源，所以这里要用event.target(或event.srcElement)，因为是在jquery中，所以写为$(event.target)||$(event.srcElement)</strong></p>
-<p>html部分：</p>
-<pre><code>&lt;span&gt;请输入拆分份数:&lt;/span&gt;
-&lt;input type=&quot;text&quot; id=&quot;houseNum&quot;/&gt;&lt;button onclick=&quot;SplitFraction()&quot;&gt;确定&lt;/button&gt;
-&lt;table class=&quot;listTable&quot; style=&quot;width:50%;&quot;&gt;
-            &lt;thead&gt;
-                &lt;td&gt;&lt;/td&gt;
-                &lt;td&gt;编号&lt;/td&gt;
-                &lt;td&gt;户数&lt;/td&gt;
-                &lt;td&gt;比例&lt;/td&gt;
-            &lt;/thead&gt;
-            &lt;tbody id=&quot;splitList&quot;&gt;
-
-            &lt;/tbody&gt;
-        &lt;/table&gt;
-</code></pre><p>js部分:<br><br>dom生成tbody部分，代码如下：</p>
-<pre><code>function SplitFraction(){    
-var sPlitParts = parseInt($(&apos;#houseNum&apos;).val());
-count = sPlitParts;
-     for(var i=0;i&lt;sPlitParts;i++){
-        $(&apos;#splitList&apos;).append(&quot;&lt;tr&gt;&lt;td&gt;&lt;input type=&apos;checkbox&apos;  id=&apos;No&quot;+(i+1)+&quot;&apos;/&gt;&lt;/td&gt;&lt;td&gt;&quot;+(i+1)+&quot;&lt;/td&gt;&lt;td&gt;&lt;input type=&apos;text&apos;  onchange=&apos;changeValue(event)&apos; id=&apos;hNum&quot;+(i+1)+&quot;&apos;/&gt;&lt;/td&gt;&lt;td&gt;&lt;input type=&apos;text&apos; onchange=&apos;changeNum(event)&apos;   id=&apos;Proportion&quot;+(i+1)+&quot;&apos;/&gt;%&lt;/td&gt;&lt;/tr&gt;&quot;);
-    }  
-}//循环当中每次生成的两个input的id分别为#hNum(i+1)和#Proportion(i+1);
-</code></pre><p>假设：分案总额为100,即：</p>
-<pre><code>var jiashuju = 100;
-</code></pre><p>input发生onchange事件时：</p>
-<p>如果是“户数”栏里的input（注：id为hNum+（i+1）），执行函数为：changeValue(event)，代码如下：</p>
-<pre><code>function changeValue(event){
- var x = $(event.target)||$(event.srcElement); 
- var val = (x.val())/jiashuju*100;  
- var tem = (x.attr(&apos;id&apos;)).substring(4);
- $(&apos;#Proportion&apos;+tem).val(val);
-} 
-</code></pre><p>  如果是“比例”栏里的input（注：id为Proportion+（i+1）），执行函数为：changeNum(event)，代码如下：</p>
-<pre><code>function changeNum(event){
-var y = $(event.target)||$(event.srcElement);
-var Num = (y.val())/100*jiashuju;
-var tem2 = (y.attr(&apos;id&apos;)).substring(10);
-$(&apos;#hNum&apos;+tem2).val(Num);
-}
-</code></pre><p>本案例考察的知识点有：onchange事件，string拼接，dom操作，substring字符串截取，事件冒泡，获取事件源，event.target与event.srcElement的兼容性。</p>
-<p><strong>event.target与event.srcElement的使用范围：</strong></p>
-<p>IE下,event对象有srcElement属性,但是没有target属性;Firefox下,event对象有target属性,但是没有srcElement属性.但他们的作用是相当的，即：</p>
-<p>firefox 下的 event.target = IE 下的 event.srcElement</p>
-<p>解决方法:使用obj(obj = event.srcElement ? event.srcElement : event.target;)来代替IE下的event.srcElement或者Firefox下的event.target.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://muxiaolana.github.io/2017/07/06/onchange事件与target/" data-id="cj6q8kldq000dyr3kzmwzszbm" class="article-share-link">Share</a>
+      <a data-url="http://muxiaolana.github.io/2017/07/06/js4种内存泄漏陷阱/" data-id="cj6q9sz9z000l953k2zr5az71" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -1110,11 +1110,11 @@ $(&apos;#hNum&apos;+tem2).val(Num);
           </li>
         
           <li>
-            <a href="/2017/07/06/js4种内存泄漏陷阱/">JavaScript中四种常见内存泄漏的陷阱</a>
+            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
           </li>
         
           <li>
-            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
+            <a href="/2017/07/06/js4种内存泄漏陷阱/">JavaScript中四种常见内存泄漏的陷阱</a>
           </li>
         
       </ul>
