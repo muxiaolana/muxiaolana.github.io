@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>jquery.extend函数使用详解 | 穆小懒</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="jquery的extend扩展方法： jquery的扩展方法extend是我们在写插件的过程中常用的方法，该方法有一些重载原型，因此需要我们先去了解。 一、jquery的扩展方法原理是： extend(dest,src1,src2,src3...); 它的含义是将src1，src2,src3…合并到dest中，返回值为合并后的dest，由此可以看出发发合并后，是修改了dest结构的。如果想要得到合">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jquery.extend函数使用详解">
+<meta property="og:url" content="http://muxiaolana.github.io/2017/08/16/jquery.extend函数使用/index.html">
+<meta property="og:site_name" content="穆小懒">
+<meta property="og:description" content="jquery的extend扩展方法： jquery的扩展方法extend是我们在写插件的过程中常用的方法，该方法有一些重载原型，因此需要我们先去了解。 一、jquery的扩展方法原理是： extend(dest,src1,src2,src3...); 它的含义是将src1，src2,src3…合并到dest中，返回值为合并后的dest，由此可以看出发发合并后，是修改了dest结构的。如果想要得到合">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-24T09:16:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jquery.extend函数使用详解">
+<meta name="twitter:description" content="jquery的extend扩展方法： jquery的扩展方法extend是我们在写插件的过程中常用的方法，该方法有一些重载原型，因此需要我们先去了解。 一、jquery的扩展方法原理是： extend(dest,src1,src2,src3...); 它的含义是将src1，src2,src3…合并到dest中，返回值为合并后的dest，由此可以看出发发合并后，是修改了dest结构的。如果想要得到合">
+  
+    <link rel="alternate" href="/atom.xml" title="穆小懒" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">穆小懒</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">穆小懒，最可耐</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muxiaolana.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-jquery.extend函数使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/16/jquery.extend函数使用/" class="article-date">
+  <time datetime="2017-08-16T15:52:06.000Z" itemprop="datePublished">2017-08-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      jquery.extend函数使用详解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>jquery的extend扩展方法：</p>
+<p>jquery的扩展方法extend是我们在写插件的过程中常用的方法，该方法有一些重载原型，因此需要我们先去了解。</p>
+<p><strong>一、jquery的扩展方法原理是：</strong></p>
+<pre><code>extend(dest,src1,src2,src3...);
+</code></pre><p>它的含义是将src1，src2,src3…合并到dest中，返回值为合并后的dest，由此可以看出发发合并后，是修改了dest结构的。如果想要得到合并的结果却又不想修改dest的结构，可以如下使用：</p>
+<pre><code>var newSrc = $.extend({},src1,src2,src3...);//也就是将“{}”作为dest的参数。
+</code></pre><p>这样可以将src1，src2,src3..进行合并，然后将返回结果返回给newSrc了。如下：</p>
+<pre><code>var result = $.extend({},{name:&quot;Tom&quot;,age:21},{name:&quot;Jerry&quot;,sex:&quot;Boy&quot;});
+</code></pre><p>合并后的结果：</p>
+<pre><code>result = {name:&quot;Jerry&quot;,age:21,sex:&quot;Boy&quot;};
+</code></pre><p>如果后面的参数和前面的参数存在相同的名称，那么后面的会覆盖前面的参数值。</p>
+<p><strong>二、省略dest参数</strong></p>
+<p>上述的extend方法原型中的dest参数是可以省略的，如果省略了，则该方法就只能有一个src参数，而且是将该src合并到调用extend方法的对象中去，如：</p>
+<p><strong>1.$.extend(src)</strong></p>
+<p>该方法就是将src合并到jquery的全局对象中去，如：</p>
+<pre><code>$.extend({
+    hello:function(){alert(&apos;hello&apos;);}
+});
+</code></pre><p>就是将hello方法合并到jquery的全局对象中。</p>
+<p><strong>2.$.fn.extend(src)</strong></p>
+<p>该方法将src合并到jquery的实例对象中去，如：</p>
+<pre><code>$.fn.extend(
+    hello:function(){alert(&apos;hello&apos;);}
+);
+</code></pre><p>就是将hello方法合并到jquery的实例对象中。</p>
+<p>下面列举几个常见实例：</p>
+<pre><code>$.extend({net:{}});
+</code></pre><p>这是在jquery全局对象中扩展 一个net命名空间。</p>
+<pre><code>$.extend($.net,{
+    hello:function(){alert(&apos;hello&apos;);};
+});
+</code></pre><p>这是将hello方法扩展到之前扩展的jquery的net命名空间中去。</p>
+<p><strong>三、jquery的extend方法还有一个重载原型</strong></p>
+<pre><code>extend（boolean,dest,src1,src2,src3...）；
+</code></pre><p>第一个参数boolean代表是否深度拷贝，其余参数和前面介绍的一致，什么叫做深层拷贝，我们看一个例子：</p>
+<pre><code>var result = $.extend(true,{},
+{name:&quot;John&quot;,location:{city:&quot;Boston&quot;,country:&quot;USA&quot;}},
+{last:&quot;Resig&quot;,location:{state:&quot;MA&quot;,country:&quot;China&quot;}});
+</code></pre><p>我们可以看出src1中嵌套子对象location：{city:”Boston”},src2中也嵌套子对象location:{state:”MA”},第一个深度拷贝参数值为true，那么合并后的结果就是：</p>
+<pre><code>result = {name:&quot;John&quot;,last:&quot;Resig&quot;,location:{city:&quot;Boston&quot;,state:&quot;MA&quot;,country:&quot;China&quot;}}
+</code></pre><p>也就是说它会将src中嵌套子对象也进行合并，而如果第一个参数boolean为false，合并结果如下：</p>
+<pre><code>result = {name:&quot;John&quot;,last:&quot;resig&quot;,location:{state:&quot;MA&quot;,country:&quot;China&quot;}}；
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2017/08/16/jquery.extend函数使用/" data-id="cj6q8kld20004yr3kddegcu9n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/26/jquery获取url参数的方法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          jquery获取url以及jquery获取url参数的实现方法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/16/原生table的表头固定内容滚动/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">原生table的表头固定，内容上下滚动</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/前端/" style="font-size: 10px;">前端</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/26/jquery获取url参数的方法/">jquery获取url以及jquery获取url参数的实现方法</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/16/jquery.extend函数使用/">jquery.extend函数使用详解</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/16/原生table的表头固定内容滚动/">原生table的表头固定，内容上下滚动</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/06/js4种内存泄漏陷阱/">JavaScript中四种常见内存泄漏的陷阱</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 muxiaolan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

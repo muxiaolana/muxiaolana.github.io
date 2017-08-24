@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>jquery获取url以及jquery获取url参数的实现方法 | 穆小懒</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.使用jquery获取当前url： window.location.href; (给window.location.href=”XXX” 赋值，即在当前位置打开新页面) 2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数： function getUrlParam(name){     var reg = new RegExp(&amp;quot;(^|&amp;am">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jquery获取url以及jquery获取url参数的实现方法">
+<meta property="og:url" content="http://muxiaolana.github.io/2017/08/26/jquery获取url参数的方法/index.html">
+<meta property="og:site_name" content="穆小懒">
+<meta property="og:description" content="1.使用jquery获取当前url： window.location.href; (给window.location.href=”XXX” 赋值，即在当前位置打开新页面) 2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数： function getUrlParam(name){     var reg = new RegExp(&amp;quot;(^|&amp;am">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-24T09:16:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jquery获取url以及jquery获取url参数的实现方法">
+<meta name="twitter:description" content="1.使用jquery获取当前url： window.location.href; (给window.location.href=”XXX” 赋值，即在当前位置打开新页面) 2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数： function getUrlParam(name){     var reg = new RegExp(&amp;quot;(^|&amp;am">
+  
+    <link rel="alternate" href="/atom.xml" title="穆小懒" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">穆小懒</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">穆小懒，最可耐</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muxiaolana.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-jquery获取url参数的方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/26/jquery获取url参数的方法/" class="article-date">
+  <time datetime="2017-08-26T15:52:06.000Z" itemprop="datePublished">2017-08-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      jquery获取url以及jquery获取url参数的实现方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.使用jquery获取当前url：</p>
+<p>window.location.href;</p>
+<p>(给window.location.href=”XXX” 赋值，即在当前位置打开新页面)</p>
+<p>2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数：</p>
+<pre><code>function getUrlParam(name){
+    var reg = new RegExp(&quot;(^|&amp;)&quot;+ name +&quot;=([^&amp;]*)(&amp;|$)&quot;);//构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);//匹配目标参数
+    if(r!=null) return unescape(r[2]);return null;//返回参数值
+｝
+</code></pre><p>小知识：</p>
+<blockquote>
+<p>unescape(string)方法是用来解码的，与escape(string)相对应<br>unescape()的工作原理是：通过找到形式为%xx和%uxxx的字序列（表示十六进制的数字），用Unicode字符\u00xx和\uxxx替换这样的字符序列进行编码。<br>unescape()和escape()函数已被废除，用decodeURI()和decodeURIComponent()（对编码后的url进行解码，encodeURIComponent是编码）取代</p>
+</blockquote>
+<p>通过这个函数传递url中的参数名就可以获取到参数的值，比如url为：</p>
+<p><a href="http://localhost:33064/WebForm2.aspx?reurl=WebForm1.aspx" target="_blank" rel="external">http://localhost:33064/WebForm2.aspx?reurl=WebForm1.aspx</a></p>
+<p>我们要获取reurl的值，可以这样写：</p>
+<pre><code>var xxx = getParam(&apos;reurl&apos;);
+</code></pre><p>明白了js获取url的方法我们可以通过这个方法为jquery扩展一个方法来通过jquery获取url参数，下面的代码为jquery扩展了一个getUrlParam()方法</p>
+<pre><code>(function($){
+    $.getUrlParam = function(name){
+        var reg = newRegExp(&quot;(^|&amp;)&quot; + name + &quot;=([^|$]*)&quot;);
+        var r = window.location.search.substr(1).match(reg);
+        if(r != null) return unescape(r[2]); return null;
+    }
+})(jquery)
+</code></pre><p>为jquery拓扩展了方法后我们就可以通过这种方法来获取某个参数的值了：</p>
+<pre><code>var xx= $.getUrlParam(&apos;reurl&apos;);
+</code></pre><p>完整代码：</p>
+<pre><code>&lt;script src=&quot;js/jquery-1.7.2.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function(){
+        //方法一
+        （function($){
+            $.getUrlParam = function(name){
+                var reg = new RegExp(&quot;()&quot; + name + &quot;&quot;);
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+        }）（jquery）；
+        var xx =  $.getUrlParam(&apos;reurl&apos;);
+        alert(xx);            
+    });
+
+    //方法二
+    //获取url中的参数
+    function getUrlParam(name){
+        var reg = new RegExp(&quot;(^|&amp;)&quot; + name + &quot;=([^&amp;]*)(&amp;|$)&quot;);
+        var  r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+
+&lt;/script&gt;
+</code></pre><p>用上面的方法获取url中的参数时，url中传递的中文参数在解析的时候无论怎么测试，获取的都是乱码。经过一番调试后发现，我再传递参数时，对汉字编码使用的是 encodeURI ，而上面的方法在解析参数编码时使用的是unescape ,修改为 decodeURI 就可以了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2017/08/26/jquery获取url参数的方法/" data-id="cj6q8kld80005yr3ks9hb6h95" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/08/16/jquery.extend函数使用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">jquery.extend函数使用详解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/前端/" style="font-size: 10px;">前端</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/26/jquery获取url参数的方法/">jquery获取url以及jquery获取url参数的实现方法</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/16/jquery.extend函数使用/">jquery.extend函数使用详解</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/16/原生table的表头固定内容滚动/">原生table的表头固定，内容上下滚动</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/06/js4种内存泄漏陷阱/">JavaScript中四种常见内存泄漏的陷阱</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 muxiaolan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

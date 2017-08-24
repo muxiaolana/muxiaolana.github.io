@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>easyui datagrid的问题 | 穆小懒</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="datagrid的两种定义方式(先引入easyui框架) &amp;lt;table  class=&amp;quot;easyui-datagrid&amp;quot; url=&amp;quot;data.php&amp;quot;     close=&amp;quot;false&amp;quot;     fit=&amp;quot;true&amp;quot;     pagination=&amp;quot;true&amp;quot;     rownumbers=&amp;">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="easyui datagrid的问题">
+<meta property="og:url" content="http://muxiaolana.github.io/2017/06/16/easyui_datagrid/index.html">
+<meta property="og:site_name" content="穆小懒">
+<meta property="og:description" content="datagrid的两种定义方式(先引入easyui框架) &amp;lt;table  class=&amp;quot;easyui-datagrid&amp;quot; url=&amp;quot;data.php&amp;quot;     close=&amp;quot;false&amp;quot;     fit=&amp;quot;true&amp;quot;     pagination=&amp;quot;true&amp;quot;     rownumbers=&amp;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-24T09:16:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="easyui datagrid的问题">
+<meta name="twitter:description" content="datagrid的两种定义方式(先引入easyui框架) &amp;lt;table  class=&amp;quot;easyui-datagrid&amp;quot; url=&amp;quot;data.php&amp;quot;     close=&amp;quot;false&amp;quot;     fit=&amp;quot;true&amp;quot;     pagination=&amp;quot;true&amp;quot;     rownumbers=&amp;">
+  
+    <link rel="alternate" href="/atom.xml" title="穆小懒" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">穆小懒</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">穆小懒，最可耐</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muxiaolana.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-easyui_datagrid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/16/easyui_datagrid/" class="article-date">
+  <time datetime="2017-06-16T15:52:06.000Z" itemprop="datePublished">2017-06-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      easyui datagrid的问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>datagrid的两种定义方式(先引入easyui框架)</p>
+<pre><code>&lt;table  class=&quot;easyui-datagrid&quot; url=&quot;data.php&quot;
+    close=&quot;false&quot;
+    fit=&quot;true&quot;
+    pagination=&quot;true&quot;
+    rownumbers=&quot;true&quot; fitColumns=&quot;true&quot; singleSlect=&quot;true&quot;
+&gt;
+
+&lt;/table&gt;
+</code></pre><p>第二种方法</p>
+<pre><code> &lt;table class=&quot;easyui-dialog&quot; id=&quot;tt&quot;&gt;&lt;/table&gt;
+
+&lt;script&gt;
+    $(&apos;#tt&apos;).datagrid({
+        iconCls:&apos;icon-edit&apos;,
+        width:1000,
+        height:356,
+        url:&apos;&lt;%=basePath%&gt;sys/depart/list.do?timestamp=&apos; + (new Date()).getTime(),
+        pagination:true,
+        singleSelect:true,
+        columns:[[
+            {field:&apos;departName&apos;,title:&apos;部门名称&apos;,width:600,editor:&apos;numberbox&apos;,
+                formatter: function(value, row, index) {
+                    var abValue = value;
+                    if (value.length&gt;=22) {
+                        abValue = value.substring(0,19) + &quot;...&quot;;
+                    }
+                    var content = &apos;&lt;a href=&quot;#&quot; title=&quot;&apos; + value + &apos;&quot; style=&quot;color:#161616;&quot; class=&quot;note&quot;&gt;&apos; + abValue + &apos;&lt;/a&gt;&apos;;
+                    return content;
+                }
+            },
+            {field:&apos;employeeCount&apos;,title:&apos;部门员工数&apos;,width:300,editor:&apos;text&apos;,
+                formatter: function(value, row, index) {
+                    var abValue = value;
+                    if (value.length&gt;=22) {
+                        abValue = value.substring(0,19) + &quot;...&quot;;
+                    }
+                    var content = &apos;&lt;a href=&quot;#&quot; title=&quot;&apos; + value + &apos;&quot; class=&quot;note&quot; style=&quot;color:#161616;&quot;&gt;&apos; + abValue + &apos;&lt;/a&gt;&apos;;
+                    return content;
+                }
+            },
+            {field:&apos;action&apos;,title:&apos;操作&apos;,width:100,align:&apos;center&apos;,
+                formatter:function(value, row, index){
+                    if (row.editing){
+                        var s = &apos;&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;rowSave(&apos;+row.id+&apos;)&quot;&gt;保存&lt;/a&gt; &apos;;
+                        var c = &apos;&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;rowCancel(&apos;+row.id+&apos;)&quot;&gt;取消&lt;/a&gt;&apos;;
+                        return s+c;
+                    } else {
+                        var e = &apos;&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;rowEdit(&apos;+row.id+&apos;)&quot;&gt;编辑&lt;/a&gt; &apos;;
+                      //  var d = &apos;&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;rowDelete(&apos;+row.id+&apos;)&quot;&gt;删除&lt;/a&gt;&apos;;
+                        return e;
+                    }
+                }
+            }
+        ]],
+        onLoadSuccess:function(data)
+        {
+           $(&quot;#tt&quot;).tooltip(
+               {
+               onShow: function(){
+                   $(this).tooltip(&apos;tip&apos;).css({ 
+                       width:&apos;300&apos;,
+
+                       boxShadow: &apos;1px 1px 3px #292929&apos;                        
+                   });
+               }
+           }
+           );
+        }
+        /* ,
+        toolbar:[{
+            text:&apos;增加&apos;,
+            iconCls:&apos;icon-add&apos;,
+            handler:rowAdd
+        }] */
+    });
+&lt;/script&gt;
+</code></pre><p>##datagrid 在移动端上表头固定，左右滑动内容的问题（在pc端适应datagrid父级宽度高度，页码位置不变内容滚动） ##</p>
+<p>只需要给datagrid一个fit=true;属性，并给datagrid一个固定宽度高度的父级，否则fit失效,内容不显示；</p>
+<h2 id="datagrid的tooltip提示框的问题-（鼠标移入时，显示提示文字内容）"><a href="#datagrid的tooltip提示框的问题-（鼠标移入时，显示提示文字内容）" class="headerlink" title="datagrid的tooltip提示框的问题 （鼠标移入时，显示提示文字内容）"></a>datagrid的tooltip提示框的问题 （鼠标移入时，显示提示文字内容）</h2><p>在需要展示的某一个格对应的位置formatter函数为</p>
+<pre><code>{field:&apos;employeeCount&apos;,title:&apos;部门员工数&apos;,width:300,editor:&apos;text&apos;,
+                formatter: function(value, row, index) {
+                    var abValue = value;
+                    if (value.length&gt;=22) {
+                        abValue = value.substring(0,19) + &quot;...&quot;;
+                    }
+                    var content = &apos;&lt;a href=&quot;#&quot; title=&quot;&apos; + value + &apos;&quot; class=&quot;note&quot; style=&quot;color:#161616;&quot;&gt;&apos; + abValue + &apos;&lt;/a&gt;&apos;;
+                    return content;
+                }
+            }
+</code></pre><p>并在datagrid的onLoadSuccess（加载成功函数里加入以下函数，<strong>注意一定要加</strong>）</p>
+<pre><code>onLoadSuccess:function(data)
+        {
+           $(&quot;#tt&quot;).tooltip(
+               {
+               onShow: function(){
+                   $(this).tooltip(&apos;tip&apos;).css({ 
+                       width:&apos;300&apos;,
+
+                       boxShadow: &apos;1px 1px 3px #292929&apos;                        
+                   });
+               }
+           }
+           );
+        }
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2017/06/16/easyui_datagrid/" data-id="cj6q8klcm0000yr3kqjn1ibq2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/06/onchange事件与target/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          input onchange事件获取事件源实例
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/12/echart根据条件切换option的问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">echarts option根据条件切换的问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/前端/" style="font-size: 10px;">前端</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/26/jquery获取url参数的方法/">jquery获取url以及jquery获取url参数的实现方法</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/16/jquery.extend函数使用/">jquery.extend函数使用详解</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/16/原生table的表头固定内容滚动/">原生table的表头固定，内容上下滚动</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/06/js4种内存泄漏陷阱/">JavaScript中四种常见内存泄漏的陷阱</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 muxiaolan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

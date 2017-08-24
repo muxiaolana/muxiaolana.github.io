@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>穆小懒</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我是一个可耐的慕小懒">
+<meta property="og:type" content="website">
+<meta property="og:title" content="穆小懒">
+<meta property="og:url" content="http://muxiaolana.github.io/page/2/index.html">
+<meta property="og:site_name" content="穆小懒">
+<meta property="og:description" content="我是一个可耐的慕小懒">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="穆小懒">
+<meta name="twitter:description" content="我是一个可耐的慕小懒">
+  
+    <link rel="alternate" href="/atom.xml" title="穆小懒" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">穆小懒</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">穆小懒，最可耐</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muxiaolana.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-easyui_datagrid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/16/easyui_datagrid/" class="article-date">
+  <time datetime="2017-06-16T15:52:06.000Z" itemprop="datePublished">2017-06-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/16/easyui_datagrid/">easyui datagrid的问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>datagrid的两种定义方式(先引入easyui框架)</p>
+<pre><code>&lt;table  class=&quot;easyui-datagrid&quot; url=&quot;data.php&quot;
+    close=&quot;false&quot;
+    fit=&quot;true&quot;
+    pagination=&quot;true&quot;
+    rownumbers=&quot;true&quot; fitColumns=&quot;true&quot; singleSlect=&quot;true&quot;
+&gt;
+
+&lt;/table&gt;
+</code></pre><p>第二种方法</p>
+<pre><code> &lt;table class=&quot;easyui-dialog&quot; id=&quot;tt&quot;&gt;&lt;/table&gt;
+
+&lt;script&gt;
+    $(&apos;#tt&apos;).datagrid({
+        iconCls:&apos;icon-edit&apos;,
+        width:1000,
+        height:356,
+        url:&apos;&lt;%=basePath%&gt;sys/depart/list.do?timestamp=&apos; + (new Date()).getTime(),
+        pagination:true,
+        singleSelect:true,
+        columns:[[
+            {field:&apos;departName&apos;,title:&apos;部门名称&apos;,width:600,editor:&apos;numberbox&apos;,
+                formatter: function(value, row, index) {
+                    var abValue = value;
+                    if (value.length&gt;=22) {
+                        abValue = value.substring(0,19) + &quot;...&quot;;
+                    }
+                    var content = &apos;&lt;a href=&quot;#&quot; title=&quot;&apos; + value + &apos;&quot; style=&quot;color:#161616;&quot; class=&quot;note&quot;&gt;&apos; + abValue + &apos;&lt;/a&gt;&apos;;
+                    return content;
+                }
+            },
+            {field:&apos;employeeCount&apos;,title:&apos;部门员工数&apos;,width:300,editor:&apos;text&apos;,
+                formatter: function(value, row, index) {
+                    var abValue = value;
+                    if (value.length&gt;=22) {
+                        abValue = value.substring(0,19) + &quot;...&quot;;
+                    }
+                    var content = &apos;&lt;a href=&quot;#&quot; title=&quot;&apos; + value + &apos;&quot; class=&quot;note&quot; style=&quot;color:#161616;&quot;&gt;&apos; + abValue + &apos;&lt;/a&gt;&apos;;
+                    return content;
+                }
+            },
+            {field:&apos;action&apos;,title:&apos;操作&apos;,width:100,align:&apos;center&apos;,
+                formatter:function(value, row, index){
+                    if (row.editing){
+                        var s = &apos;&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;rowSave(&apos;+row.id+&apos;)&quot;&gt;保存&lt;/a&gt; &apos;;
+                        var c = &apos;&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;rowCancel(&apos;+row.id+&apos;)&quot;&gt;取消&lt;/a&gt;&apos;;
+                        return s+c;
+                    } else {
+                        var e = &apos;&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;rowEdit(&apos;+row.id+&apos;)&quot;&gt;编辑&lt;/a&gt; &apos;;
+                      //  var d = &apos;&lt;a href=&quot;javascript:void(0);&quot; onclick=&quot;rowDelete(&apos;+row.id+&apos;)&quot;&gt;删除&lt;/a&gt;&apos;;
+                        return e;
+                    }
+                }
+            }
+        ]],
+        onLoadSuccess:function(data)
+        {
+           $(&quot;#tt&quot;).tooltip(
+               {
+               onShow: function(){
+                   $(this).tooltip(&apos;tip&apos;).css({ 
+                       width:&apos;300&apos;,
+
+                       boxShadow: &apos;1px 1px 3px #292929&apos;                        
+                   });
+               }
+           }
+           );
+        }
+        /* ,
+        toolbar:[{
+            text:&apos;增加&apos;,
+            iconCls:&apos;icon-add&apos;,
+            handler:rowAdd
+        }] */
+    });
+&lt;/script&gt;
+</code></pre><p>##datagrid 在移动端上表头固定，左右滑动内容的问题（在pc端适应datagrid父级宽度高度，页码位置不变内容滚动） ##</p>
+<p>只需要给datagrid一个fit=true;属性，并给datagrid一个固定宽度高度的父级，否则fit失效,内容不显示；</p>
+<h2 id="datagrid的tooltip提示框的问题-（鼠标移入时，显示提示文字内容）"><a href="#datagrid的tooltip提示框的问题-（鼠标移入时，显示提示文字内容）" class="headerlink" title="datagrid的tooltip提示框的问题 （鼠标移入时，显示提示文字内容）"></a>datagrid的tooltip提示框的问题 （鼠标移入时，显示提示文字内容）</h2><p>在需要展示的某一个格对应的位置formatter函数为</p>
+<pre><code>{field:&apos;employeeCount&apos;,title:&apos;部门员工数&apos;,width:300,editor:&apos;text&apos;,
+                formatter: function(value, row, index) {
+                    var abValue = value;
+                    if (value.length&gt;=22) {
+                        abValue = value.substring(0,19) + &quot;...&quot;;
+                    }
+                    var content = &apos;&lt;a href=&quot;#&quot; title=&quot;&apos; + value + &apos;&quot; class=&quot;note&quot; style=&quot;color:#161616;&quot;&gt;&apos; + abValue + &apos;&lt;/a&gt;&apos;;
+                    return content;
+                }
+            }
+</code></pre><p>并在datagrid的onLoadSuccess（加载成功函数里加入以下函数，<strong>注意一定要加</strong>）</p>
+<pre><code>onLoadSuccess:function(data)
+        {
+           $(&quot;#tt&quot;).tooltip(
+               {
+               onShow: function(){
+                   $(this).tooltip(&apos;tip&apos;).css({ 
+                       width:&apos;300&apos;,
+
+                       boxShadow: &apos;1px 1px 3px #292929&apos;                        
+                   });
+               }
+           }
+           );
+        }
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2017/06/16/easyui_datagrid/" data-id="cj6q8klcm0000yr3kqjn1ibq2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-echart根据条件切换option的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/12/echart根据条件切换option的问题/" class="article-date">
+  <time datetime="2017-04-12T15:52:06.000Z" itemprop="datePublished">2017-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/12/echart根据条件切换option的问题/">echarts option根据条件切换的问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在做一个echarts缩放的需求，加了dataZoom，由于老版本显示不出缩放按钮，只好选择新版本，结果新的问题出现了：原本365度无死角多条件切换的echart出现了数据叠加的问题，这样的页面有两个，以其中一个为例：</p>
+<p>先上一段代码：</p>
+<pre><code>  `function reloadEcharts(){
+        var myChart = echarts.init(document.getElementById(&apos;chart&apos;));
+        var option;
+
+        if(indexFlat==1){
+            $(&apos;#showTooltip&apos;).show();
+            //选择“每月”按钮时
+                option = {
+
+                tooltip : {
+                    trigger: &apos;axis&apos;
+                },
+                 color:[&apos;#f2d24c&apos;,&apos;#ff897a&apos;,&apos;#5695f4&apos;],
+                legend: {
+                    data:[&apos;新增&apos;,&apos;存量&apos;,&apos;合计&apos;]
+                },
+                toolbox: {//展示：刷新、下载、转换图标、展示数据表功能（这里已被隐藏）
+                    show : false,
+                    feature : {
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: [&apos;line&apos;, &apos;bar&apos;]},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                grid:{
+                        x:80,
+                        y:30,
+                        x2:20,
+
+                        borderWidth:1
+                    },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : &apos;category&apos;,
+                        data : dateHistogram,
+                        splitLine:{  
+                                    　　　　show:false ,
+                                    　　 }  
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : &apos;value&apos;
+                    }
+                ],
+                dataZoom: [{
+                    type: &apos;inside&apos;,
+                    start: 0,
+                    end: 10
+                }, {
+                    start: 0,
+                    end: 10,
+                    handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
+                    handleSize: &apos;80%&apos;,
+                    handleStyle: {
+                        color: &apos;#fff&apos;,
+                        shadowBlur: 3,
+                        shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
+                        shadowOffsetX: 2,
+                        shadowOffsetY: 2
+                    }
+                }],
+                series : [
+                    {
+                        name:&apos;新增&apos;,
+                        type:&apos;bar&apos;,
+                        data:typeDataAdd                                              
+
+                    },
+                    {
+                        name:&apos;存量&apos;,
+                        type:&apos;bar&apos;,
+                        data: typeDataScokt
+                    },
+                    {
+                        name:&apos;合计&apos;,
+                        type:&apos;bar&apos;,
+                        data:typeDataAll
+                    }
+                ]
+            };
+        }else{//点击“累计”按钮时
+            $(&apos;#showTooltip&apos;).hide();
+            option = {
+            tooltip : {
+                trigger: &apos;axis&apos;,
+                show:true,  
+                showDelay: 0,  
+                hideDelay: 0,  
+                transitionDuration:0,   
+                backgroundColor : &apos;rgba(238,242,241,0.8)&apos;,  
+                borderColor : &apos;#e0e0e0&apos;,  
+                borderRadius : 2,  
+                borderWidth: 1, 
+                fontColor:&apos;#222&apos;,
+         padding: 0,    // [5, 10, 15, 20]
+         textStyle:{
+             color:&apos;#222&apos;
+         },  
+         formatter: function (params,ticket,callback) {  
+             var oDate = new Date();
+             var oM ;
+            if(dateCount == 1){//本月时间
+                oM = oDate.getMonth()+1;
+            }else if(dateCount ==2 ){
+                oM = oDate.getMonth();//时间为上个月的时候
+            }else{
+                oM = oDate.getMonth()+1;//默认为当月时间内
+            }
+            if(oM&lt;10){
+                oM=&apos;0&apos;+oM;
+            }
+//                var time = oDate.getFullYear()+&apos;-&apos;+oM+&apos;-&apos;+params[0].name;
+            if(typeCount==7){
+                 var time =params[0].name;
+                 var res = &apos;&lt;div style=&quot;padding:0;&quot; &gt;&lt;p class=&quot;tooltipT&quot; &gt;&apos;+time+&apos;&lt;span style=&quot;margin-left:10px;&quot;&gt;&apos;+typeName+&apos;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;padding:6px 10px;&quot;&gt;&lt;span class=&quot;bluePoint&quot;&gt;&lt;/span&gt;&apos; +params[0].value+&apos;%&lt;/p&gt;&lt;/div&gt;&apos;;
+                 return res;  
+            }else{
+                 var time =params[0].name;
+                 var res = &apos;&lt;div style=&quot;padding:0;&quot; &gt;&lt;p class=&quot;tooltipT&quot; &gt;&apos;+time+&apos;&lt;span style=&quot;margin-left:10px;&quot;&gt;&apos;+typeName+&apos;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;padding:6px 10px;&quot;&gt;&lt;span class=&quot;bluePoint&quot;&gt;&lt;/span&gt;&apos; +params[0].value+&apos;&lt;/p&gt;&lt;/div&gt;&apos;;
+                 return res;  
+            }
+
+        }   
+    },
+        grid:{
+            x:80,
+            y:10,
+            x2:20,
+
+            borderWidth:1
+        },
+        toolbox: {
+            show : true,
+    },
+        calculable : true,
+        xAxis : [
+        {
+            type : &apos;category&apos;,
+            boundaryGap : false,
+            data :dateHistogram,
+            splitLine:{
+                　　　　show:false
+            　　}
+        }
+        ],
+        yAxis : [
+        {
+            type : &apos;value&apos;,
+        }
+        ],
+        dataZoom: [{
+            type: &apos;inside&apos;,
+            start: 0,
+            end: 10
+        }, {
+            start: 0,
+            end: 10,
+            handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
+            handleSize: &apos;80%&apos;,
+            handleStyle: {
+                color: &apos;#fff&apos;,
+                shadowBlur: 3,
+                shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+            }
+        }],
+        series : [
+        {
+            type:&apos;line&apos;,
+            symbol:&apos;circle&apos;,
+            itemStyle: {
+                normal: {
+                    areaStyle: {
+                        type: &apos;default&apos;,
+                        color:&apos;#fff&apos;
+                    }
+                    ,color:&apos;#5695f4&apos;
+                }
+            },
+            data:typeData
+        }  
+        ]
+    };
+}
+
+myChart.setOption(option);
+}` 
+</code></pre><p>逻辑就是当点击不同按钮的时候切换不同的option进行渲染echarts</p>
+<p><img src="http://i.imgur.com/CLv09fQ.png" alt="正常状态"></p>
+<p>一开始点击“月度数据”按钮出现的正常的图表</p>
+<p>再点击“累计数据”按钮出现了这样的图表</p>
+<p><img src="http://i.imgur.com/Bv1WpZ1.png" alt=""></p>
+<p>这还是大明湖畔那个容嬷嬷吗？！不对，是累计数据图表吗？</p>
+<p>图表上明显是两组数据同时渲染在了图表上，页面上也没有任何报错（另一个页面有一个 Uncaught TypeError: Cannot use ‘in’ operator to search for ‘_ec_inner’ in undefined 的报错），查了一下报错的地方是可能是数据格式有问题，大意是如果echarts所填数据类型不是js所识别的就需要做parse(json)处理，作为对照组当前页面并没有这样的报错，但是仍出现数据切换叠加的问题，也就是说数据叠加可能跟这个报错没有任何关系，但是本着格物致知的精神，我还是把所有填数据的地方打了一遍：数据格式全部都是数组！果然没有关系！</p>
+<p>莫非是option没有清空造成的？于是在函数中我又加了一句：option = {};</p>
+<pre><code>function reloadEcharts(){
+        var myChart = echarts.init(document.getElementById(&apos;chart&apos;));
+        var option = {};
+........
+</code></pre><p>心想这样肯定就好了，然而并没有。。。</p>
+<p>不死心，又在if（）else()里加如下：</p>
+<pre><code>function reloadEcharts(){
+      var myChart = echarts.init(document.getElementById(&apos;chart&apos;));
+      var option;
+
+      if(indexFlat==1){
+          option = {};
+          $(&apos;#showTooltip&apos;).show();
+          //选择“每月”按钮时
+              option = {
+              tooltip : {
+                  trigger: &apos;axis&apos;
+              },......
+          }else{
+              option = {};
+              ....
+          }......
+</code></pre><p>依然是不管用。。。。</p>
+<p>在else里面加了alert也弹了，数据也展示了，option也首先被清空了为什么还是这样，哭五分钟继续想···</p>
+<p>出于手贱，把else部分的内容全部清空了，上代码：</p>
+<pre><code>function reloadEcharts(){
+        var myChart = echarts.init(document.getElementById(&apos;chart&apos;));
+        var option;
+
+        if(indexFlat==1){
+            $(&apos;#showTooltip&apos;).show();
+            //选择“每月”按钮时
+                option = {
+
+                tooltip : {
+                    trigger: &apos;axis&apos;
+                },
+                 color:[&apos;#f2d24c&apos;,&apos;#ff897a&apos;,&apos;#5695f4&apos;],
+                legend: {
+                    data:[&apos;新增&apos;,&apos;存量&apos;,&apos;合计&apos;]
+                },
+                toolbox: {//展示：刷新、下载、转换图标、展示数据表功能（这里已被隐藏）
+                    show : false,
+                    feature : {
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: [&apos;line&apos;, &apos;bar&apos;]},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                grid:{
+                        x:80,
+                        y:30,
+                        x2:20,
+
+                        borderWidth:1
+                    },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : &apos;category&apos;,
+                        data : dateHistogram,
+                        splitLine:{  
+                                    　　　　show:false ,
+                                    　　 }  
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : &apos;value&apos;
+                    }
+                ],
+                dataZoom: [{
+                    type: &apos;inside&apos;,
+                    start: 0,
+                    end: 10
+                }, {
+                    start: 0,
+                    end: 10,
+                    handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
+                    handleSize: &apos;80%&apos;,
+                    handleStyle: {
+                        color: &apos;#fff&apos;,
+                        shadowBlur: 3,
+                        shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
+                        shadowOffsetX: 2,
+                        shadowOffsetY: 2
+                    }
+                }],
+                series : [
+                    {
+                        name:&apos;新增&apos;,
+                        type:&apos;bar&apos;,
+                        data:typeDataAdd                                              
+
+                    },
+                    {
+                        name:&apos;存量&apos;,
+                        type:&apos;bar&apos;,
+                        data: typeDataScokt
+                    },
+                    {
+                        name:&apos;合计&apos;,
+                        type:&apos;bar&apos;,
+                        data:typeDataAll
+                    }
+                ]
+            };
+        }
+
+
+myChart.setOption(option);
+}
+</code></pre><p>心想这次再点击累计数据应该是没有图表了，然而并没有,不管点击“月度数据”还是“累计数据”都显示月度数据下的图表，也就是说即使清掉了option，原有的数据依旧被保存下来了，是缓存的问题！后来从网上找到了clear()的方法（写法是：myChart.clear();），问题总算解决。</p>
+<p>完整代码是：</p>
+<pre><code>function reloadEcharts(){
+        var myChart = echarts.init(document.getElementById(&apos;chart&apos;));
+        var option;
+        myChart.clear();
+        if(indexFlat==1){
+            $(&apos;#showTooltip&apos;).show();
+            //选择“每月”按钮时
+                option = {
+
+                tooltip : {
+                    trigger: &apos;axis&apos;
+                },
+                 color:[&apos;#f2d24c&apos;,&apos;#ff897a&apos;,&apos;#5695f4&apos;],
+                legend: {
+                    data:[&apos;新增&apos;,&apos;存量&apos;,&apos;合计&apos;]
+                },
+                toolbox: {//展示：刷新、下载、转换图标、展示数据表功能（这里已被隐藏）
+                    show : false,
+                    feature : {
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: [&apos;line&apos;, &apos;bar&apos;]},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                grid:{
+                        x:80,
+                        y:30,
+                        x2:20,
+
+                        borderWidth:1
+                    },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : &apos;category&apos;,
+                        data : dateHistogram,
+                        splitLine:{  
+                                    　　　　show:false ,
+                                    　　 }  
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : &apos;value&apos;
+                    }
+                ],
+                dataZoom: [{
+                    type: &apos;inside&apos;,
+                    start: 0,
+                    end: 10
+                }, {
+                    start: 0,
+                    end: 10,
+                    handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
+                    handleSize: &apos;80%&apos;,
+                    handleStyle: {
+                        color: &apos;#fff&apos;,
+                        shadowBlur: 3,
+                        shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
+                        shadowOffsetX: 2,
+                        shadowOffsetY: 2
+                    }
+                }],
+                series : [
+                    {
+                        name:&apos;新增&apos;,
+                        type:&apos;bar&apos;,
+                        data:typeDataAdd                                              
+
+                    },
+                    {
+                        name:&apos;存量&apos;,
+                        type:&apos;bar&apos;,
+                        data: typeDataScokt
+                    },
+                    {
+                        name:&apos;合计&apos;,
+                        type:&apos;bar&apos;,
+                        data:typeDataAll
+                    }
+                ]
+            };
+        }else{//点击“累计”按钮时
+            $(&apos;#showTooltip&apos;).hide();
+            option = {
+            tooltip : {
+                trigger: &apos;axis&apos;,
+                show:true,  
+                showDelay: 0,  
+                hideDelay: 0,  
+                transitionDuration:0,   
+                backgroundColor : &apos;rgba(238,242,241,0.8)&apos;,  
+                borderColor : &apos;#e0e0e0&apos;,  
+                borderRadius : 2,  
+                borderWidth: 1, 
+                fontColor:&apos;#222&apos;,
+         padding: 0,    // [5, 10, 15, 20]
+         textStyle:{
+             color:&apos;#222&apos;
+         },  
+         formatter: function (params,ticket,callback) {  
+             var oDate = new Date();
+             var oM ;
+            if(dateCount == 1){//本月时间
+                oM = oDate.getMonth()+1;
+            }else if(dateCount ==2 ){
+                oM = oDate.getMonth();//时间为上个月的时候
+            }else{
+                oM = oDate.getMonth()+1;//默认为当月时间内
+            }
+            if(oM&lt;10){
+                oM=&apos;0&apos;+oM;
+            }
+//                var time = oDate.getFullYear()+&apos;-&apos;+oM+&apos;-&apos;+params[0].name;
+            if(typeCount==7){
+                 var time =params[0].name;
+                 var res = &apos;&lt;div style=&quot;padding:0;&quot; &gt;&lt;p class=&quot;tooltipT&quot; &gt;&apos;+time+&apos;&lt;span style=&quot;margin-left:10px;&quot;&gt;&apos;+typeName+&apos;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;padding:6px 10px;&quot;&gt;&lt;span class=&quot;bluePoint&quot;&gt;&lt;/span&gt;&apos; +params[0].value+&apos;%&lt;/p&gt;&lt;/div&gt;&apos;;
+                 return res;  
+            }else{
+                 var time =params[0].name;
+                 var res = &apos;&lt;div style=&quot;padding:0;&quot; &gt;&lt;p class=&quot;tooltipT&quot; &gt;&apos;+time+&apos;&lt;span style=&quot;margin-left:10px;&quot;&gt;&apos;+typeName+&apos;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;padding:6px 10px;&quot;&gt;&lt;span class=&quot;bluePoint&quot;&gt;&lt;/span&gt;&apos; +params[0].value+&apos;&lt;/p&gt;&lt;/div&gt;&apos;;
+                 return res;  
+            }
+
+        }   
+    },
+        grid:{
+            x:80,
+            y:10,
+            x2:20,
+
+            borderWidth:1
+        },
+        toolbox: {
+            show : true,
+    },
+        calculable : true,
+        xAxis : [
+        {
+            type : &apos;category&apos;,
+            boundaryGap : false,
+            data :dateHistogram,
+            splitLine:{
+                　　　　show:false
+            　　}
+        }
+        ],
+        yAxis : [
+        {
+            type : &apos;value&apos;,
+        }
+        ],
+        dataZoom: [{
+            type: &apos;inside&apos;,
+            start: 0,
+            end: 10
+        }, {
+            start: 0,
+            end: 10,
+            handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
+            handleSize: &apos;80%&apos;,
+            handleStyle: {
+                color: &apos;#fff&apos;,
+                shadowBlur: 3,
+                shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+            }
+        }],
+        series : [
+        {
+            type:&apos;line&apos;,
+            symbol:&apos;circle&apos;,
+            itemStyle: {
+                normal: {
+                    areaStyle: {
+                        type: &apos;default&apos;,
+                        color:&apos;#fff&apos;
+                    }
+                    ,color:&apos;#5695f4&apos;
+                }
+            },
+            data:typeData
+        }  
+        ]
+    };
+}
+
+
+myChart.setOption(option);
+}
+</code></pre><p>解决完问题，感觉整个世界都清爽了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2017/04/12/echart根据条件切换option的问题/" data-id="cj6q8klct0001yr3ko90vdrwx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-td换行" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/10/td换行/" class="article-date">
+  <time datetime="2017-04-10T04:52:06.000Z" itemprop="datePublished">2017-04-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/10/td换行/">td的自动换行设置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>style=”word-wrap:break-word;word-break:break-all;width:<span style="color:red;"><strong>xxx</strong></span>px;”</p>
+<p><strong>一定要设置宽度</strong></p>
+<p>word-wrap:设置或检索当前行超过指定容器的边界时是否断开折行</p>
+<p>word-wrap的取值有：</p>
+<p>normal:默认值，允许内容超出容器边界；</p>
+<p>break-word：内容在边界内换行。如果需要，词内换行（word-break）也将发生</p>
+<p>word-break:设置或检索对象内文本的<strong>字内</strong>换行行为，尤其在多种语言时。</p>
+<p>word-break的取值：</p>
+<p>normal:默认值，只允许在此间还行；</p>
+<p>break-all:该行为与亚洲语言的normal相同。也允许非亚洲语言文本行的任意字内断开，该值适合包含一些非亚洲文本的亚洲文本</p>
+<p>keep-all:与所有非亚洲语言的normal相同。对于中文，韩文，日文不允许字断开。适合包含少量亚洲文本的非亚州文本。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2017/04/10/td换行/" data-id="cj6q8kldt000iyr3ka75xsh3d" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-判断浏览器类型方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/06/判断浏览器类型方法/" class="article-date">
+  <time datetime="2017-04-06T15:52:06.000Z" itemprop="datePublished">2017-04-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/06/判断浏览器类型方法/">js判断浏览器类型的方法总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>本方法可判别当前客户端所使用的浏览器是ie，firefox,safari,chrome或者是opera，另外js可以精确到ie浏览器的版本，可直接使用以下代码</strong></p>
+<h3 id="第一种方法"><a href="#第一种方法" class="headerlink" title="第一种方法"></a>第一种方法</h3><pre><code>var BrowSer = new Object();
+Browser.isMozilla = (typeof document.implementation!=&apos;undefined&apos;)&amp;&amp;(typeof document.implementation.createDocument!=&apos;undefined&apos;)&amp;&amp;(typeof HTMLDocument!=&apos;undefined&apos;);
+Browser.isIE = window.ActiveObject?true:false;
+Browser.isFirefox = (navigator.userAgent.toLowerCase().indexOf(&quot;firefox&quot;)!=-1);
+Browser.isSafari = (navigator.userAgent.toLowerCase().indexOf(&quot;safari&quot;)!=-1);
+Browser.isOpera = (navigator.userAgent.toLowerCase().indexOf(&quot;opera&quot;)!=-1);
+  function check(){
+    alert(Browser.idIE?&apos;ie&apos;:&apos;not ie&apos;);
+    alert(Browser.isFirefox?&apos;Firefox&apos;:&apos;not Firefox&apos;);
+    alert(Browser.isSafari?&apos;Safari&apos;:&apos;not Safari&apos;);
+    alert(Browser.isOpera?&apos;Opera&apos;:&apos;not Opera&apos;);
+}
+window.onload = check;
+</code></pre><p>第二种方法：</p>
+<pre><code>function ifBrowser(){
+    var Sys = {};
+    var ua = navigator.userAgent.toLowerCase();
+    var s;
+    (s = ua.match(/msie([\d.]+)/))?Sys.ie = s[1]:
+    (s = ua.match(/firefox\/([\d.]+)/))?Sys.chrome = s[1]:
+    (s = ua.match(/opera.([\d.]+)/))?Sys.opera = s[1]:
+    (s = ua.match(/version\/([\d.]).*safari/))?Sys.safari = s[1]:0;
+    if(Sys.ie){//判断是否为IE浏览器
+        alert(Sys.ie);
+        if(Sys.ie ==&apos;9.0&apos;){//判断是否为IE9
+            alert(&apos;当前版本为ie9.0&apos;);
+        }else if(Sys.ie ==&apos;8.0&apos;){
+            alert(&apos;当前版本为ie8.0&apos;);          
+        }
+    }
+    if(Sys.firefox){//判断是否为火狐浏览器
+        alert(Sys.firefox);
+    }
+    if(Sys.chrome){//Js判断为谷歌chrome浏览器
+        alert(Sys.chrome);
+    }
+    if(Sys.opera){//Js判断为opera浏览器
+        alert(Sys.opera);
+    }
+    if(Sys.safari){//Js判断为苹果safari浏览器
+        alert(Ss.safari);
+    }
+}
+</code></pre><p><strong>判断是移动端还是pc端</strong></p>
+<pre><code>//判断是浏览器还是移动端
+
+    function IsPC(){
+        var userAgentInfo = navigator.userAgent;
+        var Agents = new Array(&quot;Android&quot;,&quot;iphone&quot;,&quot;SymbianOS&quot;,&quot;windows Phone&quot;,&quot;iPad&quot;,&quot;iPod&quot;);
+        var flag = true;
+        for(var v=0;v&lt;Agents.length;V++){
+            if(userAgentInfo.indexOf(Agents[v])&gt;0){
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }  
+    if(!IsPC()){
+        alert(&quot;这是移动端&quot;)；
+    }else{
+      alert(&quot;这是pc&quot;)；
+    };  
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2017/04/06/判断浏览器类型方法/" data-id="cj6q8kldu000lyr3krnxebi3x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-js的基本用法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/06/js的基本用法/" class="article-date">
+  <time datetime="2017-02-06T15:52:06.000Z" itemprop="datePublished">2017-02-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/学习总结/">学习总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/06/js的基本用法/">jquery刷新页面及js的基本函数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>window.location.reload();刷新当前页面</p>
+<p>parent.location.reload();刷新父级对象（用于框架）</p>
+<p>opener.location.reload();刷新父窗口对象（用于单开窗口）</p>
+<p>top.location.reload();刷新最顶端对象（用于多开窗口）</p>
+<p><strong>下面介绍一些javascript基本函数</strong></p>
+<p>1.document.write(“”);为输出语句</p>
+<p>2.传统的html文档顺序是：document-》html-》（head,body）</p>
+<p>3.浏览器窗口中的DOM顺序是：window-》(navigator,screen,history,location,document)</p>
+<p>4.小写转大写的js：document.getElementById(“output”).value = document.getElementById(“input”).value.toUpperCase();</p>
+<p>5.js的数据类型：string,number,Boolean,null,object,function</p>
+<p>6.js的字符串转成数字：parseInt(),parseFloat();</p>
+<p>7.数字转为字符串：（“”+变量）</p>
+<p>8.循环的终止命令是break</p>
+<p>9.窗口：打开窗口window.open(),关闭窗口:window.close(),窗口本身：self</p>
+<p>10.状态栏的设置：window.status=”字符”；</p>
+<p>11.弹出信息提示：window.alert(“字符”);</p>
+<p>12.弹出确认框：window.confirm();</p>
+<p>13.弹出输入提示框：window.prompt();</p>
+<p>14.指定当前显示连接的位置：window.location.href = “URL”;</p>
+<p>15.取出窗体中的所有表单的数量：document.forms.length;</p>
+<p>16.关闭文档的输出流：document.close();</p>
+<p>17.创建一个dom元素：document.createElement(),document.createTextNode();</p>
+<p>18.指定在不支持脚本的浏览器显示的html：<noscript></noscript></p>
+<p>19.<strong>当超链接和onclick事件都有时，则老版本的浏览器专向a.html，否则转向b.html,例如：<a href="a.html" onclick="location.href='b.html';return false"></a></strong></p>
+<p>20.js的内建对象：有Array,Boolean,Date,Error,EvalError,Function,Math,Number,Object,RegExp,string,SyntaxError,TypeError,URLError</p>
+<p>21.js中的换行：/n;</p>
+<p>22.窗口全屏大小：</p>
+<pre><code>&lt;script&gt;
+    function fullScreen(){
+        this.moveTo(0,0);
+        this.outerWidth = screen.availWidth;
+        this.outerHeight = screen.availHeight;
+    }
+    window.maximize = fullScreen;
+&lt;/script&gt;
+</code></pre><p>23.防止用户对文本框中输入文本：onfocus = “this.blur()”</p>
+<p>24.取出某一元素在页面上出现的数量:document.all.tags(“div(或其他元素名)”).length;</p>
+<p>25.js中分别为两种窗体输出：模态和非模态。window.showModelDialog(),window.showModeless();</p>
+<p>26.状态栏文字的设置：window.status = ‘文字’，默认的状态栏文字设置:window.defaultStatus = ‘文字’;</p>
+<p>27.添加到收藏夹：external.addFavorite(“<a href="http://www.google.com&quot;,&quot;google" target="_blank" rel="external">http://www.google.com&quot;,&quot;google</a>“);</p>
+<p>28.js遇到错误脚本时不做任何操作：window.onerror = doNothing;指定错误句柄的语法为：window.onerror = handleError;</p>
+<p>29.js中制定当前打开窗口的父窗口：window.opener,支持opener.opener…的多重继续</p>
+<p>30.js的self指的是当前窗口</p>
+<p>31.js中的top指的是框架集中最顶层的框架</p>
+<p>32.js的窗口重定向：window.navigate(“<a href="http://www.google.com" target="_blank" rel="external">http://www.google.com</a>“);</p>
+<p>33.js中的打印:window.print();</p>
+<p>34.js中的提示输入框：window.prompt(“message”,”defaultReply”);</p>
+<p>35.js中的窗口滚动条：window.scroll(x,y);</p>
+<p>36.js中的窗口滚动位置：window.scrollby</p>
+<p>37.js中的设置时间间隔：setInterval(“expr”,msecDelay)或setInterval(functionRef,mseDelay)或setTimeout;</p>
+<p>38.js的模态显示在IE4+行，在NN行中不行：showModelDialog(“URL”,[arguments],[features]);</p>
+<p>39.js中的退出之前使用的句柄：</p>
+<pre><code>function verfyClose(){
+ event.returnValue = &quot;we really like you and hope you will stay longer&quot;;
+}
+window.onbeforeunload = verifyClose;
+</code></pre><p>40.当窗体第一次调用时使用onload();</p>
+<p>41.当窗体关闭时调用的文件句柄：onunload();</p>
+<p>42.window.location的属性：protocol(http),hostname(www.example.com),port(80),host(www.example.com:80),pathname(),hash(“#giantGizmo”,指跳转到相应的锚记)，href(全部的信息);</p>
+<p>43.window.location.reload()刷新当前页面；</p>
+<p>44.parent.location.reload()刷新父级对象（用于框架）</p>
+<p>45.opener.location.reload()刷新父窗口对象（用于单开窗口）</p>
+<p>46.top.location.reload()刷新最顶端对象（用于多开窗口）</p>
+<p>47.window.history.back()返回上一页，window.history.forward()返回下一页，window.history.go(返回第几页，也可以使用访问过的URL)</p>
+<p>48.document.write()不换行的输出，document.writeIn()换行输出</p>
+<p>49.document.body.noWrap = true; 防止链接文字折行</p>
+<p>50.变量名.charAt(第几位),取该变量的第几位字符；</p>
+<p>51.”abc”.charCodeAt(第几个)，返回第几个字符的ASCII码值；</p>
+<p>52.字符串连接：string.concat(sring2),或用+=进行连接</p>
+<p>53.变量.indexOf(“字符”,起始位置)，返回第一个出现的位置（从0开始计算）</p>
+<p>54.string.lastIndexOf(searchString,startIndex)最后一次出现的位置</p>
+<p>55.string.match(regExpression),判断字符是否匹配</p>
+<p>56.string.replace(regExpression,replaceString)替换现有字符串</p>
+<p>57.string.split(分隔符)，返回一个数组存储值</p>
+<p>58.string.substring(start,length)取从第几位到指定长度的字符串</p>
+<p>59.parseInt(string)强制转化成整数</p>
+<p>60.parseFloat()强制转换成浮点型，有小数点</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2017/02/06/js的基本用法/" data-id="cj6q8kldd0006yr3kv7wabgrb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    <a class="extend prev" rel="prev" href="/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/前端/" style="font-size: 10px;">前端</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/08/26/jquery获取url参数的方法/">jquery获取url以及jquery获取url参数的实现方法</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/16/jquery.extend函数使用/">jquery.extend函数使用详解</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/16/原生table的表头固定内容滚动/">原生table的表头固定，内容上下滚动</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/06/js4种内存泄漏陷阱/">JavaScript中四种常见内存泄漏的陷阱</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 muxiaolan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
