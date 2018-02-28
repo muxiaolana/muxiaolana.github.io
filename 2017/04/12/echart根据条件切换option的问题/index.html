@@ -5,20 +5,20 @@
   
   <title>echarts option根据条件切换的问题 | 穆小懒</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近在做一个echarts缩放的需求，加了dataZoom，由于老版本显示不出缩放按钮，只好选择新版本，结果新的问题出现了：原本365度无死角多条件切换的echart出现了数据叠加的问题，这样的页面有两个，以其中一个为例： 先上一段代码：   `function reloadEcharts(){         var myChart = echarts.init(document.getElem">
+  <meta name="description" content="最近在做一个echarts缩放的需求，加了dataZoom，由于老版本显示不出缩放按钮，只好选择新版本，结果新的问题出现了：原本365度无死角多条件切换的echart出现了数据叠加的问题，这样的页面有两个，以其中一个为例： 先上一段代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444">
 <meta name="keywords" content="前端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="echarts option根据条件切换的问题">
 <meta property="og:url" content="http://muxiaolana.github.io/2017/04/12/echart根据条件切换option的问题/index.html">
 <meta property="og:site_name" content="穆小懒">
-<meta property="og:description" content="最近在做一个echarts缩放的需求，加了dataZoom，由于老版本显示不出缩放按钮，只好选择新版本，结果新的问题出现了：原本365度无死角多条件切换的echart出现了数据叠加的问题，这样的页面有两个，以其中一个为例： 先上一段代码：   `function reloadEcharts(){         var myChart = echarts.init(document.getElem">
+<meta property="og:description" content="最近在做一个echarts缩放的需求，加了dataZoom，由于老版本显示不出缩放按钮，只好选择新版本，结果新的问题出现了：原本365度无死角多条件切换的echart出现了数据叠加的问题，这样的页面有两个，以其中一个为例： 先上一段代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://i.imgur.com/CLv09fQ.png">
 <meta property="og:image" content="http://i.imgur.com/Bv1WpZ1.png">
-<meta property="og:updated_time" content="2017-08-24T09:16:07.000Z">
+<meta property="og:updated_time" content="2018-02-28T03:51:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="echarts option根据条件切换的问题">
-<meta name="twitter:description" content="最近在做一个echarts缩放的需求，加了dataZoom，由于老版本显示不出缩放按钮，只好选择新版本，结果新的问题出现了：原本365度无死角多条件切换的echart出现了数据叠加的问题，这样的页面有两个，以其中一个为例： 先上一段代码：   `function reloadEcharts(){         var myChart = echarts.init(document.getElem">
+<meta name="twitter:description" content="最近在做一个echarts缩放的需求，加了dataZoom，由于老版本显示不出缩放按钮，只好选择新版本，结果新的问题出现了：原本365度无死角多条件切换的echart出现了数据叠加的问题，这样的页面有两个，以其中一个为例： 先上一段代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444">
 <meta name="twitter:image" content="http://i.imgur.com/CLv09fQ.png">
   
     <link rel="alternate" href="/atom.xml" title="穆小懒" type="application/atom+xml">
@@ -100,198 +100,8 @@
       
         <p>最近在做一个echarts缩放的需求，加了dataZoom，由于老版本显示不出缩放按钮，只好选择新版本，结果新的问题出现了：原本365度无死角多条件切换的echart出现了数据叠加的问题，这样的页面有两个，以其中一个为例：</p>
 <p>先上一段代码：</p>
-<pre><code>  `function reloadEcharts(){
-        var myChart = echarts.init(document.getElementById(&apos;chart&apos;));
-        var option;
-
-        if(indexFlat==1){
-            $(&apos;#showTooltip&apos;).show();
-            //选择“每月”按钮时
-                option = {
-
-                tooltip : {
-                    trigger: &apos;axis&apos;
-                },
-                 color:[&apos;#f2d24c&apos;,&apos;#ff897a&apos;,&apos;#5695f4&apos;],
-                legend: {
-                    data:[&apos;新增&apos;,&apos;存量&apos;,&apos;合计&apos;]
-                },
-                toolbox: {//展示：刷新、下载、转换图标、展示数据表功能（这里已被隐藏）
-                    show : false,
-                    feature : {
-                        dataView : {show: true, readOnly: false},
-                        magicType : {show: true, type: [&apos;line&apos;, &apos;bar&apos;]},
-                        restore : {show: true},
-                        saveAsImage : {show: true}
-                    }
-                },
-                grid:{
-                        x:80,
-                        y:30,
-                        x2:20,
-
-                        borderWidth:1
-                    },
-                calculable : true,
-                xAxis : [
-                    {
-                        type : &apos;category&apos;,
-                        data : dateHistogram,
-                        splitLine:{  
-                                    　　　　show:false ,
-                                    　　 }  
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : &apos;value&apos;
-                    }
-                ],
-                dataZoom: [{
-                    type: &apos;inside&apos;,
-                    start: 0,
-                    end: 10
-                }, {
-                    start: 0,
-                    end: 10,
-                    handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
-                    handleSize: &apos;80%&apos;,
-                    handleStyle: {
-                        color: &apos;#fff&apos;,
-                        shadowBlur: 3,
-                        shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
-                        shadowOffsetX: 2,
-                        shadowOffsetY: 2
-                    }
-                }],
-                series : [
-                    {
-                        name:&apos;新增&apos;,
-                        type:&apos;bar&apos;,
-                        data:typeDataAdd                                              
-
-                    },
-                    {
-                        name:&apos;存量&apos;,
-                        type:&apos;bar&apos;,
-                        data: typeDataScokt
-                    },
-                    {
-                        name:&apos;合计&apos;,
-                        type:&apos;bar&apos;,
-                        data:typeDataAll
-                    }
-                ]
-            };
-        }else{//点击“累计”按钮时
-            $(&apos;#showTooltip&apos;).hide();
-            option = {
-            tooltip : {
-                trigger: &apos;axis&apos;,
-                show:true,  
-                showDelay: 0,  
-                hideDelay: 0,  
-                transitionDuration:0,   
-                backgroundColor : &apos;rgba(238,242,241,0.8)&apos;,  
-                borderColor : &apos;#e0e0e0&apos;,  
-                borderRadius : 2,  
-                borderWidth: 1, 
-                fontColor:&apos;#222&apos;,
-         padding: 0,    // [5, 10, 15, 20]
-         textStyle:{
-             color:&apos;#222&apos;
-         },  
-         formatter: function (params,ticket,callback) {  
-             var oDate = new Date();
-             var oM ;
-            if(dateCount == 1){//本月时间
-                oM = oDate.getMonth()+1;
-            }else if(dateCount ==2 ){
-                oM = oDate.getMonth();//时间为上个月的时候
-            }else{
-                oM = oDate.getMonth()+1;//默认为当月时间内
-            }
-            if(oM&lt;10){
-                oM=&apos;0&apos;+oM;
-            }
-//                var time = oDate.getFullYear()+&apos;-&apos;+oM+&apos;-&apos;+params[0].name;
-            if(typeCount==7){
-                 var time =params[0].name;
-                 var res = &apos;&lt;div style=&quot;padding:0;&quot; &gt;&lt;p class=&quot;tooltipT&quot; &gt;&apos;+time+&apos;&lt;span style=&quot;margin-left:10px;&quot;&gt;&apos;+typeName+&apos;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;padding:6px 10px;&quot;&gt;&lt;span class=&quot;bluePoint&quot;&gt;&lt;/span&gt;&apos; +params[0].value+&apos;%&lt;/p&gt;&lt;/div&gt;&apos;;
-                 return res;  
-            }else{
-                 var time =params[0].name;
-                 var res = &apos;&lt;div style=&quot;padding:0;&quot; &gt;&lt;p class=&quot;tooltipT&quot; &gt;&apos;+time+&apos;&lt;span style=&quot;margin-left:10px;&quot;&gt;&apos;+typeName+&apos;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;padding:6px 10px;&quot;&gt;&lt;span class=&quot;bluePoint&quot;&gt;&lt;/span&gt;&apos; +params[0].value+&apos;&lt;/p&gt;&lt;/div&gt;&apos;;
-                 return res;  
-            }
-
-        }   
-    },
-        grid:{
-            x:80,
-            y:10,
-            x2:20,
-
-            borderWidth:1
-        },
-        toolbox: {
-            show : true,
-    },
-        calculable : true,
-        xAxis : [
-        {
-            type : &apos;category&apos;,
-            boundaryGap : false,
-            data :dateHistogram,
-            splitLine:{
-                　　　　show:false
-            　　}
-        }
-        ],
-        yAxis : [
-        {
-            type : &apos;value&apos;,
-        }
-        ],
-        dataZoom: [{
-            type: &apos;inside&apos;,
-            start: 0,
-            end: 10
-        }, {
-            start: 0,
-            end: 10,
-            handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
-            handleSize: &apos;80%&apos;,
-            handleStyle: {
-                color: &apos;#fff&apos;,
-                shadowBlur: 3,
-                shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
-                shadowOffsetX: 2,
-                shadowOffsetY: 2
-            }
-        }],
-        series : [
-        {
-            type:&apos;line&apos;,
-            symbol:&apos;circle&apos;,
-            itemStyle: {
-                normal: {
-                    areaStyle: {
-                        type: &apos;default&apos;,
-                        color:&apos;#fff&apos;
-                    }
-                    ,color:&apos;#5695f4&apos;
-                }
-            },
-            data:typeData
-        }  
-        ]
-    };
-}
-
-myChart.setOption(option);
-}` 
-</code></pre><p>逻辑就是当点击不同按钮的时候切换不同的option进行渲染echarts</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">reloadEcharts</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> myChart = echarts.init(<span class="built_in">document</span>.getElementById(<span class="string">'chart'</span>));</span><br><span class="line">		<span class="keyword">var</span> option;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(indexFlat==<span class="number">1</span>)&#123;</span><br><span class="line">			$(<span class="string">'#showTooltip'</span>).show();</span><br><span class="line">			<span class="comment">//选择“每月”按钮时</span></span><br><span class="line">				option = &#123;</span><br><span class="line"></span><br><span class="line">			    tooltip : &#123;</span><br><span class="line">			        trigger: <span class="string">'axis'</span></span><br><span class="line">			    &#125;,</span><br><span class="line">			     color:[<span class="string">'#f2d24c'</span>,<span class="string">'#ff897a'</span>,<span class="string">'#5695f4'</span>],</span><br><span class="line">			    legend: &#123;</span><br><span class="line">			        data:[<span class="string">'新增'</span>,<span class="string">'存量'</span>,<span class="string">'合计'</span>]</span><br><span class="line">			    &#125;,</span><br><span class="line">			    toolbox: &#123;<span class="comment">//展示：刷新、下载、转换图标、展示数据表功能（这里已被隐藏）</span></span><br><span class="line">			        show : <span class="literal">false</span>,</span><br><span class="line">			        feature : &#123;</span><br><span class="line">			            dataView : &#123;<span class="attr">show</span>: <span class="literal">true</span>, <span class="attr">readOnly</span>: <span class="literal">false</span>&#125;,</span><br><span class="line">			            magicType : &#123;<span class="attr">show</span>: <span class="literal">true</span>, <span class="attr">type</span>: [<span class="string">'line'</span>, <span class="string">'bar'</span>]&#125;,</span><br><span class="line">			            restore : &#123;<span class="attr">show</span>: <span class="literal">true</span>&#125;,</span><br><span class="line">			            saveAsImage : &#123;<span class="attr">show</span>: <span class="literal">true</span>&#125;</span><br><span class="line">			        &#125;</span><br><span class="line">			    &#125;,</span><br><span class="line">			    grid:&#123;</span><br><span class="line">			        	x:<span class="number">80</span>,</span><br><span class="line">			        	y:<span class="number">30</span>,</span><br><span class="line">			        	x2:<span class="number">20</span>,</span><br><span class="line">			        </span><br><span class="line">			        	borderWidth:<span class="number">1</span></span><br><span class="line">			        &#125;,</span><br><span class="line">			    calculable : <span class="literal">true</span>,</span><br><span class="line">			    xAxis : [</span><br><span class="line">			        &#123;</span><br><span class="line">			            type : <span class="string">'category'</span>,</span><br><span class="line">			            data : dateHistogram,</span><br><span class="line">			            splitLine:&#123;  </span><br><span class="line">			                        　　　　show:<span class="literal">false</span> ,</span><br><span class="line">			                        　　 &#125;  </span><br><span class="line">			        &#125;</span><br><span class="line">			    ],</span><br><span class="line">			    yAxis : [</span><br><span class="line">			        &#123;</span><br><span class="line">			            type : <span class="string">'value'</span></span><br><span class="line">			        &#125;</span><br><span class="line">			    ],</span><br><span class="line">			    dataZoom: [&#123;</span><br><span class="line">                    type: <span class="string">'inside'</span>,</span><br><span class="line">                    start: <span class="number">0</span>,</span><br><span class="line">                    end: <span class="number">10</span></span><br><span class="line">                &#125;, &#123;</span><br><span class="line">                    start: <span class="number">0</span>,</span><br><span class="line">                    end: <span class="number">10</span>,</span><br><span class="line">                    handleIcon: <span class="string">'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z'</span>,</span><br><span class="line">                    handleSize: <span class="string">'80%'</span>,</span><br><span class="line">                    handleStyle: &#123;</span><br><span class="line">                        color: <span class="string">'#fff'</span>,</span><br><span class="line">                        shadowBlur: <span class="number">3</span>,</span><br><span class="line">                        shadowColor: <span class="string">'rgba(0, 0, 0, 0.6)'</span>,</span><br><span class="line">                        shadowOffsetX: <span class="number">2</span>,</span><br><span class="line">                        shadowOffsetY: <span class="number">2</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;],</span><br><span class="line">			    series : [</span><br><span class="line">			        &#123;</span><br><span class="line">			            name:<span class="string">'新增'</span>,</span><br><span class="line">			            type:<span class="string">'bar'</span>,</span><br><span class="line">			            data:typeDataAdd  									    	</span><br><span class="line"></span><br><span class="line">			        &#125;,</span><br><span class="line">			        &#123;</span><br><span class="line">			            name:<span class="string">'存量'</span>,</span><br><span class="line">			            type:<span class="string">'bar'</span>,</span><br><span class="line">			            data: typeDataScokt</span><br><span class="line">			        &#125;,</span><br><span class="line">			        &#123;</span><br><span class="line">			            name:<span class="string">'合计'</span>,</span><br><span class="line">			            type:<span class="string">'bar'</span>,</span><br><span class="line">			            data:typeDataAll</span><br><span class="line">			        &#125;</span><br><span class="line">			    ]</span><br><span class="line">			&#125;;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;<span class="comment">//点击“累计”按钮时</span></span><br><span class="line">			$(<span class="string">'#showTooltip'</span>).hide();</span><br><span class="line">			option = &#123;</span><br><span class="line">			tooltip : &#123;</span><br><span class="line">				trigger: <span class="string">'axis'</span>,</span><br><span class="line">				show:<span class="literal">true</span>,  </span><br><span class="line">				showDelay: <span class="number">0</span>,  </span><br><span class="line">				hideDelay: <span class="number">0</span>,  </span><br><span class="line">				transitionDuration:<span class="number">0</span>,   </span><br><span class="line">				backgroundColor : <span class="string">'rgba(238,242,241,0.8)'</span>,  </span><br><span class="line">				borderColor : <span class="string">'#e0e0e0'</span>,  </span><br><span class="line">				borderRadius : <span class="number">2</span>,  </span><br><span class="line">				borderWidth: <span class="number">1</span>, </span><br><span class="line">				fontColor:<span class="string">'#222'</span>,</span><br><span class="line">         padding: <span class="number">0</span>,    <span class="comment">// [5, 10, 15, 20]</span></span><br><span class="line">         textStyle:&#123;</span><br><span class="line">         	color:<span class="string">'#222'</span></span><br><span class="line">         &#125;,  </span><br><span class="line">         formatter: <span class="function"><span class="keyword">function</span> (<span class="params">params,ticket,callback</span>) </span>&#123;  </span><br><span class="line">         	<span class="keyword">var</span> oDate = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">         	<span class="keyword">var</span> oM ;</span><br><span class="line">            <span class="keyword">if</span>(dateCount == <span class="number">1</span>)&#123;<span class="comment">//本月时间</span></span><br><span class="line">            	oM = oDate.getMonth()+<span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(dateCount ==<span class="number">2</span> )&#123;</span><br><span class="line">            	oM = oDate.getMonth();<span class="comment">//时间为上个月的时候</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            	oM = oDate.getMonth()+<span class="number">1</span>;<span class="comment">//默认为当月时间内</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(oM&lt;<span class="number">10</span>)&#123;</span><br><span class="line">            	oM=<span class="string">'0'</span>+oM;</span><br><span class="line">            &#125;</span><br><span class="line"><span class="comment">//                var time = oDate.getFullYear()+'-'+oM+'-'+params[0].name;</span></span><br><span class="line">			<span class="keyword">if</span>(typeCount==<span class="number">7</span>)&#123;</span><br><span class="line">				 <span class="keyword">var</span> time =params[<span class="number">0</span>].name;</span><br><span class="line">	             <span class="keyword">var</span> res = <span class="string">'&lt;div style="padding:0;" &gt;&lt;p class="tooltipT" &gt;'</span>+time+<span class="string">'&lt;span style="margin-left:10px;"&gt;'</span>+typeName+<span class="string">'&lt;/span&gt;&lt;/p&gt;&lt;p style="padding:6px 10px;"&gt;&lt;span class="bluePoint"&gt;&lt;/span&gt;'</span> +params[<span class="number">0</span>].value+<span class="string">'%&lt;/p&gt;&lt;/div&gt;'</span>;</span><br><span class="line">	             <span class="keyword">return</span> res;  </span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				 <span class="keyword">var</span> time =params[<span class="number">0</span>].name;</span><br><span class="line">	             <span class="keyword">var</span> res = <span class="string">'&lt;div style="padding:0;" &gt;&lt;p class="tooltipT" &gt;'</span>+time+<span class="string">'&lt;span style="margin-left:10px;"&gt;'</span>+typeName+<span class="string">'&lt;/span&gt;&lt;/p&gt;&lt;p style="padding:6px 10px;"&gt;&lt;span class="bluePoint"&gt;&lt;/span&gt;'</span> +params[<span class="number">0</span>].value+<span class="string">'&lt;/p&gt;&lt;/div&gt;'</span>;</span><br><span class="line">	             <span class="keyword">return</span> res;  </span><br><span class="line">			&#125;</span><br><span class="line">           </span><br><span class="line">        &#125;   </span><br><span class="line">    &#125;,</span><br><span class="line">        grid:&#123;</span><br><span class="line">        	x:<span class="number">80</span>,</span><br><span class="line">        	y:<span class="number">10</span>,</span><br><span class="line">        	x2:<span class="number">20</span>,</span><br><span class="line">        	</span><br><span class="line">        	borderWidth:<span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        toolbox: &#123;</span><br><span class="line">        	show : <span class="literal">true</span>,</span><br><span class="line">	&#125;,</span><br><span class="line">	    calculable : <span class="literal">true</span>,</span><br><span class="line">	    xAxis : [</span><br><span class="line">	    &#123;</span><br><span class="line">	    	type : <span class="string">'category'</span>,</span><br><span class="line">	    	boundaryGap : <span class="literal">false</span>,</span><br><span class="line">	    	data :dateHistogram,</span><br><span class="line">	    	splitLine:&#123;</span><br><span class="line">	    		　　　　show:<span class="literal">false</span></span><br><span class="line">	    	　　&#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	    ],</span><br><span class="line">	    yAxis : [</span><br><span class="line">	    &#123;</span><br><span class="line">	    	type : <span class="string">'value'</span>,</span><br><span class="line">	    &#125;</span><br><span class="line">	    ],</span><br><span class="line">	    dataZoom: [&#123;</span><br><span class="line">            type: <span class="string">'inside'</span>,</span><br><span class="line">            start: <span class="number">0</span>,</span><br><span class="line">            end: <span class="number">10</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            start: <span class="number">0</span>,</span><br><span class="line">            end: <span class="number">10</span>,</span><br><span class="line">            handleIcon: <span class="string">'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z'</span>,</span><br><span class="line">            handleSize: <span class="string">'80%'</span>,</span><br><span class="line">            handleStyle: &#123;</span><br><span class="line">                color: <span class="string">'#fff'</span>,</span><br><span class="line">                shadowBlur: <span class="number">3</span>,</span><br><span class="line">                shadowColor: <span class="string">'rgba(0, 0, 0, 0.6)'</span>,</span><br><span class="line">                shadowOffsetX: <span class="number">2</span>,</span><br><span class="line">                shadowOffsetY: <span class="number">2</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;],</span><br><span class="line">	    series : [</span><br><span class="line">	    &#123;</span><br><span class="line">	    	type:<span class="string">'line'</span>,</span><br><span class="line">	    	symbol:<span class="string">'circle'</span>,</span><br><span class="line">	    	itemStyle: &#123;</span><br><span class="line">	    		normal: &#123;</span><br><span class="line">	    			areaStyle: &#123;</span><br><span class="line">	    				type: <span class="string">'default'</span>,</span><br><span class="line">	    				color:<span class="string">'#fff'</span></span><br><span class="line">	    			&#125;</span><br><span class="line">	    			,<span class="attr">color</span>:<span class="string">'#5695f4'</span></span><br><span class="line">	    		&#125;</span><br><span class="line">	    	&#125;,</span><br><span class="line">	    	data:typeData</span><br><span class="line">	    &#125;  </span><br><span class="line">	    ]</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myChart.setOption(option);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>逻辑就是当点击不同按钮的时候切换不同的option进行渲染echarts</p>
 <p><img src="http://i.imgur.com/CLv09fQ.png" alt="正常状态"></p>
 <p>一开始点击“月度数据”按钮出现的正常的图表</p>
 <p>再点击“累计数据”按钮出现了这样的图表</p>
@@ -305,313 +115,20 @@ myChart.setOption(option);
 ........
 </code></pre><p>心想这样肯定就好了，然而并没有。。。</p>
 <p>不死心，又在if（）else()里加如下：</p>
-<pre><code>function reloadEcharts(){
-      var myChart = echarts.init(document.getElementById(&apos;chart&apos;));
-      var option;
-
-      if(indexFlat==1){
-          option = {};
-          $(&apos;#showTooltip&apos;).show();
-          //选择“每月”按钮时
-              option = {
-              tooltip : {
-                  trigger: &apos;axis&apos;
-              },......
-          }else{
-              option = {};
-              ....
-          }......
-</code></pre><p>依然是不管用。。。。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reloadEcharts</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> myChart = echarts.init(<span class="built_in">document</span>.getElementById(<span class="string">'chart'</span>));</span><br><span class="line">	<span class="keyword">var</span> option;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>(indexFlat==<span class="number">1</span>)&#123;</span><br><span class="line">		option = &#123;&#125;;</span><br><span class="line">		$(<span class="string">'#showTooltip'</span>).show();</span><br><span class="line">		<span class="comment">//选择“每月”按钮时</span></span><br><span class="line">			option = &#123;</span><br><span class="line">			tooltip : &#123;</span><br><span class="line">		        trigger: <span class="string">'axis'</span></span><br><span class="line">		    &#125;,......</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			option = &#123;&#125;;</span><br><span class="line">			....</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<p>依然是不管用。。。。</p>
 <p>在else里面加了alert也弹了，数据也展示了，option也首先被清空了为什么还是这样，哭五分钟继续想···</p>
 <p>出于手贱，把else部分的内容全部清空了，上代码：</p>
-<pre><code>function reloadEcharts(){
-        var myChart = echarts.init(document.getElementById(&apos;chart&apos;));
-        var option;
-
-        if(indexFlat==1){
-            $(&apos;#showTooltip&apos;).show();
-            //选择“每月”按钮时
-                option = {
-
-                tooltip : {
-                    trigger: &apos;axis&apos;
-                },
-                 color:[&apos;#f2d24c&apos;,&apos;#ff897a&apos;,&apos;#5695f4&apos;],
-                legend: {
-                    data:[&apos;新增&apos;,&apos;存量&apos;,&apos;合计&apos;]
-                },
-                toolbox: {//展示：刷新、下载、转换图标、展示数据表功能（这里已被隐藏）
-                    show : false,
-                    feature : {
-                        dataView : {show: true, readOnly: false},
-                        magicType : {show: true, type: [&apos;line&apos;, &apos;bar&apos;]},
-                        restore : {show: true},
-                        saveAsImage : {show: true}
-                    }
-                },
-                grid:{
-                        x:80,
-                        y:30,
-                        x2:20,
-
-                        borderWidth:1
-                    },
-                calculable : true,
-                xAxis : [
-                    {
-                        type : &apos;category&apos;,
-                        data : dateHistogram,
-                        splitLine:{  
-                                    　　　　show:false ,
-                                    　　 }  
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : &apos;value&apos;
-                    }
-                ],
-                dataZoom: [{
-                    type: &apos;inside&apos;,
-                    start: 0,
-                    end: 10
-                }, {
-                    start: 0,
-                    end: 10,
-                    handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
-                    handleSize: &apos;80%&apos;,
-                    handleStyle: {
-                        color: &apos;#fff&apos;,
-                        shadowBlur: 3,
-                        shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
-                        shadowOffsetX: 2,
-                        shadowOffsetY: 2
-                    }
-                }],
-                series : [
-                    {
-                        name:&apos;新增&apos;,
-                        type:&apos;bar&apos;,
-                        data:typeDataAdd                                              
-
-                    },
-                    {
-                        name:&apos;存量&apos;,
-                        type:&apos;bar&apos;,
-                        data: typeDataScokt
-                    },
-                    {
-                        name:&apos;合计&apos;,
-                        type:&apos;bar&apos;,
-                        data:typeDataAll
-                    }
-                ]
-            };
-        }
-
-
-myChart.setOption(option);
-}
-</code></pre><p>心想这次再点击累计数据应该是没有图表了，然而并没有,不管点击“月度数据”还是“累计数据”都显示月度数据下的图表，也就是说即使清掉了option，原有的数据依旧被保存下来了，是缓存的问题！后来从网上找到了clear()的方法（写法是：myChart.clear();），问题总算解决。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reloadEcharts</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> myChart = echarts.init(<span class="built_in">document</span>.getElementById(<span class="string">'chart'</span>));</span><br><span class="line">		<span class="keyword">var</span> option;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(indexFlat==<span class="number">1</span>)&#123;</span><br><span class="line">			$(<span class="string">'#showTooltip'</span>).show();</span><br><span class="line">			<span class="comment">//选择“每月”按钮时</span></span><br><span class="line">				option = &#123;</span><br><span class="line"></span><br><span class="line">			    tooltip : &#123;</span><br><span class="line">			        trigger: <span class="string">'axis'</span></span><br><span class="line">			    &#125;,</span><br><span class="line">			     color:[<span class="string">'#f2d24c'</span>,<span class="string">'#ff897a'</span>,<span class="string">'#5695f4'</span>],</span><br><span class="line">			    legend: &#123;</span><br><span class="line">			        data:[<span class="string">'新增'</span>,<span class="string">'存量'</span>,<span class="string">'合计'</span>]</span><br><span class="line">			    &#125;,</span><br><span class="line">			    toolbox: &#123;<span class="comment">//展示：刷新、下载、转换图标、展示数据表功能（这里已被隐藏）</span></span><br><span class="line">			        show : <span class="literal">false</span>,</span><br><span class="line">			        feature : &#123;</span><br><span class="line">			            dataView : &#123;<span class="attr">show</span>: <span class="literal">true</span>, <span class="attr">readOnly</span>: <span class="literal">false</span>&#125;,</span><br><span class="line">			            magicType : &#123;<span class="attr">show</span>: <span class="literal">true</span>, <span class="attr">type</span>: [<span class="string">'line'</span>, <span class="string">'bar'</span>]&#125;,</span><br><span class="line">			            restore : &#123;<span class="attr">show</span>: <span class="literal">true</span>&#125;,</span><br><span class="line">			            saveAsImage : &#123;<span class="attr">show</span>: <span class="literal">true</span>&#125;</span><br><span class="line">			        &#125;</span><br><span class="line">			    &#125;,</span><br><span class="line">			    grid:&#123;</span><br><span class="line">			        	x:<span class="number">80</span>,</span><br><span class="line">			        	y:<span class="number">30</span>,</span><br><span class="line">			        	x2:<span class="number">20</span>,</span><br><span class="line">			        </span><br><span class="line">			        	borderWidth:<span class="number">1</span></span><br><span class="line">			        &#125;,</span><br><span class="line">			    calculable : <span class="literal">true</span>,</span><br><span class="line">			    xAxis : [</span><br><span class="line">			        &#123;</span><br><span class="line">			            type : <span class="string">'category'</span>,</span><br><span class="line">			            data : dateHistogram,</span><br><span class="line">			            splitLine:&#123;  </span><br><span class="line">			                        　　　　show:<span class="literal">false</span> ,</span><br><span class="line">			                        　　 &#125;  </span><br><span class="line">			        &#125;</span><br><span class="line">			    ],</span><br><span class="line">			    yAxis : [</span><br><span class="line">			        &#123;</span><br><span class="line">			            type : <span class="string">'value'</span></span><br><span class="line">			        &#125;</span><br><span class="line">			    ],</span><br><span class="line">			    dataZoom: [&#123;</span><br><span class="line">                    type: <span class="string">'inside'</span>,</span><br><span class="line">                    start: <span class="number">0</span>,</span><br><span class="line">                    end: <span class="number">10</span></span><br><span class="line">                &#125;, &#123;</span><br><span class="line">                    start: <span class="number">0</span>,</span><br><span class="line">                    end: <span class="number">10</span>,</span><br><span class="line">                    handleIcon: <span class="string">'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z'</span>,</span><br><span class="line">                    handleSize: <span class="string">'80%'</span>,</span><br><span class="line">                    handleStyle: &#123;</span><br><span class="line">                        color: <span class="string">'#fff'</span>,</span><br><span class="line">                        shadowBlur: <span class="number">3</span>,</span><br><span class="line">                        shadowColor: <span class="string">'rgba(0, 0, 0, 0.6)'</span>,</span><br><span class="line">                        shadowOffsetX: <span class="number">2</span>,</span><br><span class="line">                        shadowOffsetY: <span class="number">2</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;],</span><br><span class="line">			    series : [</span><br><span class="line">			        &#123;</span><br><span class="line">			            name:<span class="string">'新增'</span>,</span><br><span class="line">			            type:<span class="string">'bar'</span>,</span><br><span class="line">			            data:typeDataAdd  									    	</span><br><span class="line"></span><br><span class="line">			        &#125;,</span><br><span class="line">			        &#123;</span><br><span class="line">			            name:<span class="string">'存量'</span>,</span><br><span class="line">			            type:<span class="string">'bar'</span>,</span><br><span class="line">			            data: typeDataScokt</span><br><span class="line">			        &#125;,</span><br><span class="line">			        &#123;</span><br><span class="line">			            name:<span class="string">'合计'</span>,</span><br><span class="line">			            type:<span class="string">'bar'</span>,</span><br><span class="line">			            data:typeDataAll</span><br><span class="line">			        &#125;</span><br><span class="line">			    ]</span><br><span class="line">			&#125;;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">myChart.setOption(option);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>心想这次再点击累计数据应该是没有图表了，然而并没有,不管点击“月度数据”还是“累计数据”都显示月度数据下的图表，也就是说即使清掉了option，原有的数据依旧被保存下来了，是缓存的问题！后来从网上找到了clear()的方法（写法是：myChart.clear();），问题总算解决。</p>
 <p>完整代码是：</p>
-<pre><code>function reloadEcharts(){
-        var myChart = echarts.init(document.getElementById(&apos;chart&apos;));
-        var option;
-        myChart.clear();
-        if(indexFlat==1){
-            $(&apos;#showTooltip&apos;).show();
-            //选择“每月”按钮时
-                option = {
-
-                tooltip : {
-                    trigger: &apos;axis&apos;
-                },
-                 color:[&apos;#f2d24c&apos;,&apos;#ff897a&apos;,&apos;#5695f4&apos;],
-                legend: {
-                    data:[&apos;新增&apos;,&apos;存量&apos;,&apos;合计&apos;]
-                },
-                toolbox: {//展示：刷新、下载、转换图标、展示数据表功能（这里已被隐藏）
-                    show : false,
-                    feature : {
-                        dataView : {show: true, readOnly: false},
-                        magicType : {show: true, type: [&apos;line&apos;, &apos;bar&apos;]},
-                        restore : {show: true},
-                        saveAsImage : {show: true}
-                    }
-                },
-                grid:{
-                        x:80,
-                        y:30,
-                        x2:20,
-
-                        borderWidth:1
-                    },
-                calculable : true,
-                xAxis : [
-                    {
-                        type : &apos;category&apos;,
-                        data : dateHistogram,
-                        splitLine:{  
-                                    　　　　show:false ,
-                                    　　 }  
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : &apos;value&apos;
-                    }
-                ],
-                dataZoom: [{
-                    type: &apos;inside&apos;,
-                    start: 0,
-                    end: 10
-                }, {
-                    start: 0,
-                    end: 10,
-                    handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
-                    handleSize: &apos;80%&apos;,
-                    handleStyle: {
-                        color: &apos;#fff&apos;,
-                        shadowBlur: 3,
-                        shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
-                        shadowOffsetX: 2,
-                        shadowOffsetY: 2
-                    }
-                }],
-                series : [
-                    {
-                        name:&apos;新增&apos;,
-                        type:&apos;bar&apos;,
-                        data:typeDataAdd                                              
-
-                    },
-                    {
-                        name:&apos;存量&apos;,
-                        type:&apos;bar&apos;,
-                        data: typeDataScokt
-                    },
-                    {
-                        name:&apos;合计&apos;,
-                        type:&apos;bar&apos;,
-                        data:typeDataAll
-                    }
-                ]
-            };
-        }else{//点击“累计”按钮时
-            $(&apos;#showTooltip&apos;).hide();
-            option = {
-            tooltip : {
-                trigger: &apos;axis&apos;,
-                show:true,  
-                showDelay: 0,  
-                hideDelay: 0,  
-                transitionDuration:0,   
-                backgroundColor : &apos;rgba(238,242,241,0.8)&apos;,  
-                borderColor : &apos;#e0e0e0&apos;,  
-                borderRadius : 2,  
-                borderWidth: 1, 
-                fontColor:&apos;#222&apos;,
-         padding: 0,    // [5, 10, 15, 20]
-         textStyle:{
-             color:&apos;#222&apos;
-         },  
-         formatter: function (params,ticket,callback) {  
-             var oDate = new Date();
-             var oM ;
-            if(dateCount == 1){//本月时间
-                oM = oDate.getMonth()+1;
-            }else if(dateCount ==2 ){
-                oM = oDate.getMonth();//时间为上个月的时候
-            }else{
-                oM = oDate.getMonth()+1;//默认为当月时间内
-            }
-            if(oM&lt;10){
-                oM=&apos;0&apos;+oM;
-            }
-//                var time = oDate.getFullYear()+&apos;-&apos;+oM+&apos;-&apos;+params[0].name;
-            if(typeCount==7){
-                 var time =params[0].name;
-                 var res = &apos;&lt;div style=&quot;padding:0;&quot; &gt;&lt;p class=&quot;tooltipT&quot; &gt;&apos;+time+&apos;&lt;span style=&quot;margin-left:10px;&quot;&gt;&apos;+typeName+&apos;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;padding:6px 10px;&quot;&gt;&lt;span class=&quot;bluePoint&quot;&gt;&lt;/span&gt;&apos; +params[0].value+&apos;%&lt;/p&gt;&lt;/div&gt;&apos;;
-                 return res;  
-            }else{
-                 var time =params[0].name;
-                 var res = &apos;&lt;div style=&quot;padding:0;&quot; &gt;&lt;p class=&quot;tooltipT&quot; &gt;&apos;+time+&apos;&lt;span style=&quot;margin-left:10px;&quot;&gt;&apos;+typeName+&apos;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;padding:6px 10px;&quot;&gt;&lt;span class=&quot;bluePoint&quot;&gt;&lt;/span&gt;&apos; +params[0].value+&apos;&lt;/p&gt;&lt;/div&gt;&apos;;
-                 return res;  
-            }
-
-        }   
-    },
-        grid:{
-            x:80,
-            y:10,
-            x2:20,
-
-            borderWidth:1
-        },
-        toolbox: {
-            show : true,
-    },
-        calculable : true,
-        xAxis : [
-        {
-            type : &apos;category&apos;,
-            boundaryGap : false,
-            data :dateHistogram,
-            splitLine:{
-                　　　　show:false
-            　　}
-        }
-        ],
-        yAxis : [
-        {
-            type : &apos;value&apos;,
-        }
-        ],
-        dataZoom: [{
-            type: &apos;inside&apos;,
-            start: 0,
-            end: 10
-        }, {
-            start: 0,
-            end: 10,
-            handleIcon: &apos;M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z&apos;,
-            handleSize: &apos;80%&apos;,
-            handleStyle: {
-                color: &apos;#fff&apos;,
-                shadowBlur: 3,
-                shadowColor: &apos;rgba(0, 0, 0, 0.6)&apos;,
-                shadowOffsetX: 2,
-                shadowOffsetY: 2
-            }
-        }],
-        series : [
-        {
-            type:&apos;line&apos;,
-            symbol:&apos;circle&apos;,
-            itemStyle: {
-                normal: {
-                    areaStyle: {
-                        type: &apos;default&apos;,
-                        color:&apos;#fff&apos;
-                    }
-                    ,color:&apos;#5695f4&apos;
-                }
-            },
-            data:typeData
-        }  
-        ]
-    };
-}
-
-
-myChart.setOption(option);
-}
-</code></pre><p>解决完问题，感觉整个世界都清爽了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reloadEcharts</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> myChart = echarts.init(<span class="built_in">document</span>.getElementById(<span class="string">'chart'</span>));</span><br><span class="line">		<span class="keyword">var</span> option;</span><br><span class="line">		myChart.clear();</span><br><span class="line">		<span class="keyword">if</span>(indexFlat==<span class="number">1</span>)&#123;</span><br><span class="line">			$(<span class="string">'#showTooltip'</span>).show();</span><br><span class="line">			<span class="comment">//选择“每月”按钮时</span></span><br><span class="line">				option = &#123;</span><br><span class="line"></span><br><span class="line">			    tooltip : &#123;</span><br><span class="line">			        trigger: <span class="string">'axis'</span></span><br><span class="line">			    &#125;,</span><br><span class="line">			     color:[<span class="string">'#f2d24c'</span>,<span class="string">'#ff897a'</span>,<span class="string">'#5695f4'</span>],</span><br><span class="line">			    legend: &#123;</span><br><span class="line">			        data:[<span class="string">'新增'</span>,<span class="string">'存量'</span>,<span class="string">'合计'</span>]</span><br><span class="line">			    &#125;,</span><br><span class="line">			    toolbox: &#123;<span class="comment">//展示：刷新、下载、转换图标、展示数据表功能（这里已被隐藏）</span></span><br><span class="line">			        show : <span class="literal">false</span>,</span><br><span class="line">			        feature : &#123;</span><br><span class="line">			            dataView : &#123;<span class="attr">show</span>: <span class="literal">true</span>, <span class="attr">readOnly</span>: <span class="literal">false</span>&#125;,</span><br><span class="line">			            magicType : &#123;<span class="attr">show</span>: <span class="literal">true</span>, <span class="attr">type</span>: [<span class="string">'line'</span>, <span class="string">'bar'</span>]&#125;,</span><br><span class="line">			            restore : &#123;<span class="attr">show</span>: <span class="literal">true</span>&#125;,</span><br><span class="line">			            saveAsImage : &#123;<span class="attr">show</span>: <span class="literal">true</span>&#125;</span><br><span class="line">			        &#125;</span><br><span class="line">			    &#125;,</span><br><span class="line">			    grid:&#123;</span><br><span class="line">			        	x:<span class="number">80</span>,</span><br><span class="line">			        	y:<span class="number">30</span>,</span><br><span class="line">			        	x2:<span class="number">20</span>,</span><br><span class="line">			        </span><br><span class="line">			        	borderWidth:<span class="number">1</span></span><br><span class="line">			        &#125;,</span><br><span class="line">			    calculable : <span class="literal">true</span>,</span><br><span class="line">			    xAxis : [</span><br><span class="line">			        &#123;</span><br><span class="line">			            type : <span class="string">'category'</span>,</span><br><span class="line">			            data : dateHistogram,</span><br><span class="line">			            splitLine:&#123;  </span><br><span class="line">			                        　　　　show:<span class="literal">false</span> ,</span><br><span class="line">			                        　　 &#125;  </span><br><span class="line">			        &#125;</span><br><span class="line">			    ],</span><br><span class="line">			    yAxis : [</span><br><span class="line">			        &#123;</span><br><span class="line">			            type : <span class="string">'value'</span></span><br><span class="line">			        &#125;</span><br><span class="line">			    ],</span><br><span class="line">			    dataZoom: [&#123;</span><br><span class="line">                    type: <span class="string">'inside'</span>,</span><br><span class="line">                    start: <span class="number">0</span>,</span><br><span class="line">                    end: <span class="number">10</span></span><br><span class="line">                &#125;, &#123;</span><br><span class="line">                    start: <span class="number">0</span>,</span><br><span class="line">                    end: <span class="number">10</span>,</span><br><span class="line">                    handleIcon: <span class="string">'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z'</span>,</span><br><span class="line">                    handleSize: <span class="string">'80%'</span>,</span><br><span class="line">                    handleStyle: &#123;</span><br><span class="line">                        color: <span class="string">'#fff'</span>,</span><br><span class="line">                        shadowBlur: <span class="number">3</span>,</span><br><span class="line">                        shadowColor: <span class="string">'rgba(0, 0, 0, 0.6)'</span>,</span><br><span class="line">                        shadowOffsetX: <span class="number">2</span>,</span><br><span class="line">                        shadowOffsetY: <span class="number">2</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;],</span><br><span class="line">			    series : [</span><br><span class="line">			        &#123;</span><br><span class="line">			            name:<span class="string">'新增'</span>,</span><br><span class="line">			            type:<span class="string">'bar'</span>,</span><br><span class="line">			            data:typeDataAdd  									    	</span><br><span class="line"></span><br><span class="line">			        &#125;,</span><br><span class="line">			        &#123;</span><br><span class="line">			            name:<span class="string">'存量'</span>,</span><br><span class="line">			            type:<span class="string">'bar'</span>,</span><br><span class="line">			            data: typeDataScokt</span><br><span class="line">			        &#125;,</span><br><span class="line">			        &#123;</span><br><span class="line">			            name:<span class="string">'合计'</span>,</span><br><span class="line">			            type:<span class="string">'bar'</span>,</span><br><span class="line">			            data:typeDataAll</span><br><span class="line">			        &#125;</span><br><span class="line">			    ]</span><br><span class="line">			&#125;;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;<span class="comment">//点击“累计”按钮时</span></span><br><span class="line">			$(<span class="string">'#showTooltip'</span>).hide();</span><br><span class="line">			option = &#123;</span><br><span class="line">			tooltip : &#123;</span><br><span class="line">				trigger: <span class="string">'axis'</span>,</span><br><span class="line">				show:<span class="literal">true</span>,  </span><br><span class="line">				showDelay: <span class="number">0</span>,  </span><br><span class="line">				hideDelay: <span class="number">0</span>,  </span><br><span class="line">				transitionDuration:<span class="number">0</span>,   </span><br><span class="line">				backgroundColor : <span class="string">'rgba(238,242,241,0.8)'</span>,  </span><br><span class="line">				borderColor : <span class="string">'#e0e0e0'</span>,  </span><br><span class="line">				borderRadius : <span class="number">2</span>,  </span><br><span class="line">				borderWidth: <span class="number">1</span>, </span><br><span class="line">				fontColor:<span class="string">'#222'</span>,</span><br><span class="line">         padding: <span class="number">0</span>,    <span class="comment">// [5, 10, 15, 20]</span></span><br><span class="line">         textStyle:&#123;</span><br><span class="line">         	color:<span class="string">'#222'</span></span><br><span class="line">         &#125;,  </span><br><span class="line">         formatter: <span class="function"><span class="keyword">function</span> (<span class="params">params,ticket,callback</span>) </span>&#123;  </span><br><span class="line">         	<span class="keyword">var</span> oDate = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">         	<span class="keyword">var</span> oM ;</span><br><span class="line">            <span class="keyword">if</span>(dateCount == <span class="number">1</span>)&#123;<span class="comment">//本月时间</span></span><br><span class="line">            	oM = oDate.getMonth()+<span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(dateCount ==<span class="number">2</span> )&#123;</span><br><span class="line">            	oM = oDate.getMonth();<span class="comment">//时间为上个月的时候</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            	oM = oDate.getMonth()+<span class="number">1</span>;<span class="comment">//默认为当月时间内</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(oM&lt;<span class="number">10</span>)&#123;</span><br><span class="line">            	oM=<span class="string">'0'</span>+oM;</span><br><span class="line">            &#125;</span><br><span class="line"><span class="comment">//                var time = oDate.getFullYear()+'-'+oM+'-'+params[0].name;</span></span><br><span class="line">			<span class="keyword">if</span>(typeCount==<span class="number">7</span>)&#123;</span><br><span class="line">				 <span class="keyword">var</span> time =params[<span class="number">0</span>].name;</span><br><span class="line">	             <span class="keyword">var</span> res = <span class="string">'&lt;div style="padding:0;" &gt;&lt;p class="tooltipT" &gt;'</span>+time+<span class="string">'&lt;span style="margin-left:10px;"&gt;'</span>+typeName+<span class="string">'&lt;/span&gt;&lt;/p&gt;&lt;p style="padding:6px 10px;"&gt;&lt;span class="bluePoint"&gt;&lt;/span&gt;'</span> +params[<span class="number">0</span>].value+<span class="string">'%&lt;/p&gt;&lt;/div&gt;'</span>;</span><br><span class="line">	             <span class="keyword">return</span> res;  </span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				 <span class="keyword">var</span> time =params[<span class="number">0</span>].name;</span><br><span class="line">	             <span class="keyword">var</span> res = <span class="string">'&lt;div style="padding:0;" &gt;&lt;p class="tooltipT" &gt;'</span>+time+<span class="string">'&lt;span style="margin-left:10px;"&gt;'</span>+typeName+<span class="string">'&lt;/span&gt;&lt;/p&gt;&lt;p style="padding:6px 10px;"&gt;&lt;span class="bluePoint"&gt;&lt;/span&gt;'</span> +params[<span class="number">0</span>].value+<span class="string">'&lt;/p&gt;&lt;/div&gt;'</span>;</span><br><span class="line">	             <span class="keyword">return</span> res;  </span><br><span class="line">			&#125;</span><br><span class="line">           </span><br><span class="line">        &#125;   </span><br><span class="line">    &#125;,</span><br><span class="line">        grid:&#123;</span><br><span class="line">        	x:<span class="number">80</span>,</span><br><span class="line">        	y:<span class="number">10</span>,</span><br><span class="line">        	x2:<span class="number">20</span>,</span><br><span class="line">        	</span><br><span class="line">        	borderWidth:<span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        toolbox: &#123;</span><br><span class="line">        	show : <span class="literal">true</span>,</span><br><span class="line">	&#125;,</span><br><span class="line">	    calculable : <span class="literal">true</span>,</span><br><span class="line">	    xAxis : [</span><br><span class="line">	    &#123;</span><br><span class="line">	    	type : <span class="string">'category'</span>,</span><br><span class="line">	    	boundaryGap : <span class="literal">false</span>,</span><br><span class="line">	    	data :dateHistogram,</span><br><span class="line">	    	splitLine:&#123;</span><br><span class="line">	    		　　　　show:<span class="literal">false</span></span><br><span class="line">	    	　　&#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	    ],</span><br><span class="line">	    yAxis : [</span><br><span class="line">	    &#123;</span><br><span class="line">	    	type : <span class="string">'value'</span>,</span><br><span class="line">	    &#125;</span><br><span class="line">	    ],</span><br><span class="line">	    dataZoom: [&#123;</span><br><span class="line">            type: <span class="string">'inside'</span>,</span><br><span class="line">            start: <span class="number">0</span>,</span><br><span class="line">            end: <span class="number">10</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            start: <span class="number">0</span>,</span><br><span class="line">            end: <span class="number">10</span>,</span><br><span class="line">            handleIcon: <span class="string">'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z'</span>,</span><br><span class="line">            handleSize: <span class="string">'80%'</span>,</span><br><span class="line">            handleStyle: &#123;</span><br><span class="line">                color: <span class="string">'#fff'</span>,</span><br><span class="line">                shadowBlur: <span class="number">3</span>,</span><br><span class="line">                shadowColor: <span class="string">'rgba(0, 0, 0, 0.6)'</span>,</span><br><span class="line">                shadowOffsetX: <span class="number">2</span>,</span><br><span class="line">                shadowOffsetY: <span class="number">2</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;],</span><br><span class="line">	    series : [</span><br><span class="line">	    &#123;</span><br><span class="line">	    	type:<span class="string">'line'</span>,</span><br><span class="line">	    	symbol:<span class="string">'circle'</span>,</span><br><span class="line">	    	itemStyle: &#123;</span><br><span class="line">	    		normal: &#123;</span><br><span class="line">	    			areaStyle: &#123;</span><br><span class="line">	    				type: <span class="string">'default'</span>,</span><br><span class="line">	    				color:<span class="string">'#fff'</span></span><br><span class="line">	    			&#125;</span><br><span class="line">	    			,<span class="attr">color</span>:<span class="string">'#5695f4'</span></span><br><span class="line">	    		&#125;</span><br><span class="line">	    	&#125;,</span><br><span class="line">	    	data:typeData</span><br><span class="line">	    &#125;  </span><br><span class="line">	    ]</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">myChart.setOption(option);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解决完问题，感觉整个世界都清爽了</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://muxiaolana.github.io/2017/04/12/echart根据条件切换option的问题/" data-id="cj7llrpnr0004y13kc36kpdm1" class="article-share-link">Share</a>
+      <a data-url="http://muxiaolana.github.io/2017/04/12/echart根据条件切换option的问题/" data-id="cje6if56d00069m3kcnu27nw3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -650,7 +167,7 @@ myChart.setOption(option);
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -660,7 +177,7 @@ myChart.setOption(option);
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2017/">2017</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2017/">2017</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2018/">2018</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/">bootstrap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table/">table</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端分页/">前端分页</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端排序/">前端排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -670,7 +187,7 @@ myChart.setOption(option);
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/2017/" style="font-size: 10px;">2017</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a>
+      <a href="/tags/2017/" style="font-size: 10px;">2017</a> <a href="/tags/2018/" style="font-size: 10px;">2018</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/table/" style="font-size: 10px;">table</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端分页/" style="font-size: 10px;">前端分页</a> <a href="/tags/前端排序/" style="font-size: 10px;">前端排序</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a>
     </div>
   </div>
 
@@ -679,7 +196,7 @@ myChart.setOption(option);
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -690,6 +207,10 @@ myChart.setOption(option);
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/02/27/bootstrap-table的前端排序和分页/">bootstrap-table的前端排序和分页技术</a>
+          </li>
         
           <li>
             <a href="/2018/01/16/2017年终总结/">2017年终总结</a>
@@ -705,10 +226,6 @@ myChart.setOption(option);
         
           <li>
             <a href="/2017/07/16/原生table的表头固定内容滚动/">原生table的表头固定，内容上下滚动</a>
-          </li>
-        
-          <li>
-            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
           </li>
         
       </ul>

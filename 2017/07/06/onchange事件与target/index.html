@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="穆小懒">
 <meta property="og:description" content="注意：此实例需要引入jquery文件  请输入拆案份数：确定  table{border-top:1px solid #eee;border-right:1px solid #eee;} table th{border-top:none;border-right:none;}                     户数        比例">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-24T09:16:29.000Z">
+<meta property="og:updated_time" content="2018-02-28T03:48:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="input onchange事件获取事件源实例">
 <meta name="twitter:description" content="注意：此实例需要引入jquery文件  请输入拆案份数：确定  table{border-top:1px solid #eee;border-right:1px solid #eee;} table th{border-top:none;border-right:none;}                     户数        比例">
@@ -104,45 +104,17 @@
 <p>逻辑分析：输入拆分份数（input的value）&gt;点击确定&gt;循环&gt;dom操作生成新的tr（<strong>tr中包含的两个input在id或者class类名中一定要有有别于其他，但一定要一致的部分</strong>）&gt;tr中的input（第一个）发生onchange时间的时候（注：输入必须为大于0的数字），计算当前输入数目占总数的比例&gt;将所得比例赋值给input（第二个）；</p>
 <p><strong>这个需求本身的难点在于，在一组而且是不固定数目的input中每次onchange的时候，如果用this或者$(this)来获取事件源，由于this会一直冒泡到window，显示的事件源即为window，不能实现onchange事件的来源定位，而event.target(或event.srcElement)没有冒泡，可以实现准确定位事件源，所以这里要用event.target(或event.srcElement)，因为是在jquery中，所以写为$(event.target)||$(event.srcElement)</strong></p>
 <p>html部分：</p>
-<pre><code>&lt;span&gt;请输入拆分份数:&lt;/span&gt;
-&lt;input type=&quot;text&quot; id=&quot;houseNum&quot;/&gt;&lt;button onclick=&quot;SplitFraction()&quot;&gt;确定&lt;/button&gt;
-&lt;table class=&quot;listTable&quot; style=&quot;width:50%;&quot;&gt;
-            &lt;thead&gt;
-                &lt;td&gt;&lt;/td&gt;
-                &lt;td&gt;编号&lt;/td&gt;
-                &lt;td&gt;户数&lt;/td&gt;
-                &lt;td&gt;比例&lt;/td&gt;
-            &lt;/thead&gt;
-            &lt;tbody id=&quot;splitList&quot;&gt;
-
-            &lt;/tbody&gt;
-        &lt;/table&gt;
-</code></pre><p>js部分:<br><br>dom生成tbody部分，代码如下：</p>
-<pre><code>function SplitFraction(){    
-var sPlitParts = parseInt($(&apos;#houseNum&apos;).val());
-count = sPlitParts;
-     for(var i=0;i&lt;sPlitParts;i++){
-        $(&apos;#splitList&apos;).append(&quot;&lt;tr&gt;&lt;td&gt;&lt;input type=&apos;checkbox&apos;  id=&apos;No&quot;+(i+1)+&quot;&apos;/&gt;&lt;/td&gt;&lt;td&gt;&quot;+(i+1)+&quot;&lt;/td&gt;&lt;td&gt;&lt;input type=&apos;text&apos;  onchange=&apos;changeValue(event)&apos; id=&apos;hNum&quot;+(i+1)+&quot;&apos;/&gt;&lt;/td&gt;&lt;td&gt;&lt;input type=&apos;text&apos; onchange=&apos;changeNum(event)&apos;   id=&apos;Proportion&quot;+(i+1)+&quot;&apos;/&gt;%&lt;/td&gt;&lt;/tr&gt;&quot;);
-    }  
-}//循环当中每次生成的两个input的id分别为#hNum(i+1)和#Proportion(i+1);
-</code></pre><p>假设：分案总额为100,即：</p>
-<pre><code>var jiashuju = 100;
-</code></pre><p>input发生onchange事件时：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;span&gt;请输入拆分份数:&lt;/span&gt;</span><br><span class="line">&lt;input type=<span class="string">"text"</span> id=<span class="string">"houseNum"</span>/&gt;&lt;button onclick="SplitFraction()"&gt;确定&lt;/button&gt;</span><br><span class="line">&lt;table <span class="class"><span class="keyword">class</span></span>=<span class="string">"listTable"</span> style=<span class="string">"width:50%;"</span>&gt;</span><br><span class="line">	&lt;thead&gt;</span><br><span class="line">		&lt;td&gt;&lt;/td&gt;</span><br><span class="line">		&lt;td&gt;编号&lt;<span class="regexp">/td&gt;</span></span><br><span class="line"><span class="regexp">		&lt;td&gt;户数&lt;/</span>td&gt;</span><br><span class="line">		&lt;td&gt;比例&lt;<span class="regexp">/td&gt;</span></span><br><span class="line"><span class="regexp">	&lt;/</span>thead&gt;</span><br><span class="line">	&lt;tbody id=<span class="string">"splitList"</span>&gt;</span><br><span class="line">		</span><br><span class="line">	&lt;<span class="regexp">/tbody&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>table&gt;</span><br></pre></td></tr></table></figure>
+<p>js部分:<br><br>dom生成tbody部分，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SplitFraction</span>(<span class="params"></span>)</span>&#123;	</span><br><span class="line">	<span class="keyword">var</span> sPlitParts = <span class="built_in">parseInt</span>($(<span class="string">'#houseNum'</span>).val());</span><br><span class="line">	count = sPlitParts;</span><br><span class="line">		 <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;sPlitParts;i++)&#123;</span><br><span class="line">			$(<span class="string">'#splitList'</span>).append(<span class="string">"&lt;tr&gt;&lt;td&gt;&lt;input type='checkbox'  id='No"</span>+(i+<span class="number">1</span>)+<span class="string">"'/&gt;&lt;/td&gt;&lt;td&gt;"</span>+(i+<span class="number">1</span>)+<span class="string">"&lt;/td&gt;&lt;td&gt;&lt;input type='text'  onchange='changeValue(event)' id='hNum"</span>+(i+<span class="number">1</span>)+<span class="string">"'/&gt;&lt;/td&gt;&lt;td&gt;&lt;input type='text' onchange='changeNum(event)'   id='Proportion"</span>+(i+<span class="number">1</span>)+<span class="string">"'/&gt;%&lt;/td&gt;&lt;/tr&gt;"</span>);</span><br><span class="line">		&#125;  </span><br><span class="line">&#125;<span class="comment">//循环当中每次生成的两个input的id分别为#hNum(i+1)和#Proportion(i+1);</span></span><br></pre></td></tr></table></figure>
+<p>假设：分案总额为100,即：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jiashuju = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<p>input发生onchange事件时：</p>
 <p>如果是“户数”栏里的input（注：id为hNum+（i+1）），执行函数为：changeValue(event)，代码如下：</p>
-<pre><code>function changeValue(event){
- var x = $(event.target)||$(event.srcElement); 
- var val = (x.val())/jiashuju*100;  
- var tem = (x.attr(&apos;id&apos;)).substring(4);
- $(&apos;#Proportion&apos;+tem).val(val);
-} 
-</code></pre><p>  如果是“比例”栏里的input（注：id为Proportion+（i+1）），执行函数为：changeNum(event)，代码如下：</p>
-<pre><code>function changeNum(event){
-var y = $(event.target)||$(event.srcElement);
-var Num = (y.val())/100*jiashuju;
-var tem2 = (y.attr(&apos;id&apos;)).substring(10);
-$(&apos;#hNum&apos;+tem2).val(Num);
-}
-</code></pre><p>本案例考察的知识点有：onchange事件，string拼接，dom操作，substring字符串截取，事件冒泡，获取事件源，event.target与event.srcElement的兼容性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeValue</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">	 <span class="keyword">var</span> x = $(event.target)||$(event.srcElement); </span><br><span class="line">	 <span class="keyword">var</span> val = (x.val())/jiashuju*<span class="number">100</span>;  </span><br><span class="line">	 <span class="keyword">var</span> tem = (x.attr(<span class="string">'id'</span>)).substring(<span class="number">4</span>);</span><br><span class="line">	 $(<span class="string">'#Proportion'</span>+tem).val(val);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  如果是“比例”栏里的input（注：id为Proportion+（i+1）），执行函数为：changeNum(event)，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeNum</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> y = $(event.target)||$(event.srcElement);</span><br><span class="line">	<span class="keyword">var</span> Num = (y.val())/<span class="number">100</span>*jiashuju;</span><br><span class="line">	<span class="keyword">var</span> tem2 = (y.attr(<span class="string">'id'</span>)).substring(<span class="number">10</span>);</span><br><span class="line">	$(<span class="string">'#hNum'</span>+tem2).val(Num);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>本案例考察的知识点有：onchange事件，string拼接，dom操作，substring字符串截取，事件冒泡，获取事件源，event.target与event.srcElement的兼容性。</p>
 <p><strong>event.target与event.srcElement的使用范围：</strong></p>
 <p>IE下,event对象有srcElement属性,但是没有target属性;Firefox下,event对象有target属性,但是没有srcElement属性.但他们的作用是相当的，即：</p>
 <p>firefox 下的 event.target = IE 下的 event.srcElement</p>
@@ -151,7 +123,7 @@ $(&apos;#hNum&apos;+tem2).val(Num);
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://muxiaolana.github.io/2017/07/06/onchange事件与target/" data-id="cj7llrpnt0006y13k827qcny8" class="article-share-link">Share</a>
+      <a data-url="http://muxiaolana.github.io/2017/07/06/onchange事件与target/" data-id="cje6if56i000a9m3k1yjfiki0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -162,19 +134,19 @@ $(&apos;#hNum&apos;+tem2).val(Num);
     
 <nav id="article-nav">
   
-    <a href="/2017/07/16/原生table的表头固定内容滚动/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/07/06/js4种内存泄漏陷阱/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          原生table的表头固定，内容上下滚动
+          JavaScript中四种常见内存泄漏的陷阱
         
       </div>
     </a>
   
   
-    <a href="/2017/07/06/js4种内存泄漏陷阱/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/06/16/easyui_datagrid/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">JavaScript中四种常见内存泄漏的陷阱</div>
+      <div class="article-nav-title">easyui datagrid的问题</div>
     </a>
   
 </nav>
@@ -190,7 +162,7 @@ $(&apos;#hNum&apos;+tem2).val(Num);
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -200,7 +172,7 @@ $(&apos;#hNum&apos;+tem2).val(Num);
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2017/">2017</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2017/">2017</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2018/">2018</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/">bootstrap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table/">table</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端分页/">前端分页</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端排序/">前端排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -210,7 +182,7 @@ $(&apos;#hNum&apos;+tem2).val(Num);
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/2017/" style="font-size: 10px;">2017</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a>
+      <a href="/tags/2017/" style="font-size: 10px;">2017</a> <a href="/tags/2018/" style="font-size: 10px;">2018</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/table/" style="font-size: 10px;">table</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端分页/" style="font-size: 10px;">前端分页</a> <a href="/tags/前端排序/" style="font-size: 10px;">前端排序</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a>
     </div>
   </div>
 
@@ -219,7 +191,7 @@ $(&apos;#hNum&apos;+tem2).val(Num);
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -230,6 +202,10 @@ $(&apos;#hNum&apos;+tem2).val(Num);
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/02/27/bootstrap-table的前端排序和分页/">bootstrap-table的前端排序和分页技术</a>
+          </li>
         
           <li>
             <a href="/2018/01/16/2017年终总结/">2017年终总结</a>
@@ -245,10 +221,6 @@ $(&apos;#hNum&apos;+tem2).val(Num);
         
           <li>
             <a href="/2017/07/16/原生table的表头固定内容滚动/">原生table的表头固定，内容上下滚动</a>
-          </li>
-        
-          <li>
-            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
           </li>
         
       </ul>

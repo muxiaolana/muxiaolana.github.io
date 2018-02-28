@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="穆小懒">
 <meta property="og:description" content="介绍内存泄漏是每个开发者不得不面对的问题。即使使用自动内存管理的语言，还是会碰到一些内存泄漏的情况。内存泄漏会导致一系列的问题，比如：运行缓慢，崩溃，高延迟，甚至一些与其他应用相关的问题。 什么是内存泄漏本质上来讲，内存泄漏是当一块内存不再被应用程序使用的时候，由于某种原因，这块内存没有返还给操作系统或者空闲内存池的现象。编程语言使用不同的方式来管理内存。这些方式可能会减少内存泄露的机会。然而">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-24T09:16:25.000Z">
+<meta property="og:updated_time" content="2018-02-28T03:42:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript中四种常见内存泄漏的陷阱">
 <meta name="twitter:description" content="介绍内存泄漏是每个开发者不得不面对的问题。即使使用自动内存管理的语言，还是会碰到一些内存泄漏的情况。内存泄漏会导致一系列的问题，比如：运行缓慢，崩溃，高延迟，甚至一些与其他应用相关的问题。 什么是内存泄漏本质上来讲，内存泄漏是当一块内存不再被应用程序使用的时候，由于某种原因，这块内存没有返还给操作系统或者空闲内存池的现象。编程语言使用不同的方式来管理内存。这些方式可能会减少内存泄露的机会。然而">
@@ -109,36 +109,29 @@
 <p>不必要的引用就是那些程序员知道这块内存已经没有用了，但是出于某种原因这块内存依然存在于活跃的根节点发出的节点树中。在javascript的环境中，不必要的引用是某些不再被使用的代码中的变量。这些变量指向了一块本来可以被释放的内存。</p>
 <h3 id="3种常见的js内存泄漏"><a href="#3种常见的js内存泄漏" class="headerlink" title="3种常见的js内存泄漏"></a>3种常见的js内存泄漏</h3><p><strong>1.意外的全局变量</strong></p>
 <p>js语言的设计目的之一是开发一种类似于java但是对于初学者十分友好的语言，体现在js宽容性的一点，表现在他处理为声明变量的方式上：一个为声明变量的引用会在全局对象中创建一个新的变量。在浏览器的环境下，全局对象就是window，也就是说：</p>
-<blockquote>
-<p>function foo(arg){<br><br>bar = “this is a hidden global variable”;<br>} </p>
-</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">arg</span>)</span>&#123;</span><br><span class="line">	bar = <span class="string">"this is a hidden global variable"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>实际上是：</p>
-<blockquote>
-<p>function foo(arg){<br><br>window.bar = “this is a hidden global variable”;}</p>
-</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">arg</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">window</span>.bar = <span class="string">"this is a hidden global variable"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果bar是一个应该指向foo函数作用域内变量的引用，但是如果忘记了使用var 来声明这个变量，这时一个全局变量就会被创建出来。在这个例子中，一个简单的字符串泄露并不会带来大的危害，但这是错误的。</p>
 <p>另外，还有一种偶然创建全局变量的方法如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.variable = <span class="string">"potential accidental global"</span>;</span><br><span class="line">&#125;</span><br><span class="line">foo();</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>function foo(){<br><br>this.variable = “potential accidental global”;<br>}<br><br> foo();<br>//函数自身发生了调用，this指向了全局对象（window),(这时候会为全局对象window添加一个variable属性）而不是undefined.</p>
+<p>//函数自身发生了调用，this指向了全局对象（window),(这时候会为全局对象window添加一个variable属性）而不是undefined.</p>
 <p>为了防止这种错误的发生，可以在你的js文件开头添加’use strict’;语句，这个语句实际上开启了解释js的严格模式，这种模式可以避免创建意外的全局变量。</p>
 </blockquote>
 <p><strong>全局变量的注意事项</strong></p>
 <p>尽管我们在讨论那些被隐蔽的全局变量，但是也有很多代码被明确的全局变量污染的情况。按照定义来讲，这些都是不会被回收的变量（除非设置null或者重新赋值）。<strong>特变需要注意的是那些被用来临时存储和处理一些大量的信息的全局变量。</strong>如果必须使用全局变量来存储很多的数据，请确保在使用过后将它重新赋值或者设置为null.<strong>常见的和全局变量相关的引发内存消耗增长的原因就是缓存</strong>。缓存存储着可复用的数据。为了让这种做法更高效，必须为缓存容器的容量规定一个上界。由于缓存不能被及时回收的缘故，缓存无限制的增长会导致很高的内存消耗。</p>
 <h2 id="2-被遗漏的定时器和回调函数"><a href="#2-被遗漏的定时器和回调函数" class="headerlink" title="2.被遗漏的定时器和回调函数"></a>2.被遗漏的定时器和回调函数</h2><p>在js中setInterval的使用非常常见，其他的库也经常会提供观察者和其他需要回调的功能。这些库中的绝大部分都会关注一点，就是当他们本身的实例被销毁之前所有指向回调的引用。在setInterval这种情况下，一般情况下的代码是这样的：</p>
-<blockquote>
-<p>var someResource = getData();<br><br>setInterval(function(){<br><br>var node = document.getElementById(‘node’);<br><br>if(node){<br><br>node.innerHTML = JSON.stringify(someResource);//stringify是将一个对象转为字符串(与parse功能相反)<br><br>}<br><br>},3000);</p>
-</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> someResource = getData();</span><br><span class="line">    setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> node = <span class="built_in">document</span>.getElementById(<span class="string">'node'</span>);</span><br><span class="line">	<span class="keyword">if</span>(node)&#123;</span><br><span class="line">		node.innerHTML = <span class="built_in">JSON</span>.stringify(someResource);<span class="comment">//stringify是将一个对象转为字符串(与parse功能相反)&lt;br&gt;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;,<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
 <p>这个例子说明了摇晃的定时器会发生什么：引用节点或者数据的定时器已经没用了。这些表示节点的对象在将来可能会被移除掉，所以整个代码块放在周期处理函数中并不是必要的。然而，由于周期函数一直在运行，处理函数并不会被回收（只有周期函数停止运行之后才开始回收内存）。如果周期处理函数不能被回收，它的依赖程序也同样无法被回收。这就意味着一些资源，也许是相当大的数据也无法被回收。</p>
 <p>下面举一个观察者例子，当它们不再被需要的时候（或者关联对象要失效的时候）显式的将他们移除是十分重要的。在以前某些浏览器（尤其是ie6）是一个至关重要的步骤，因为他们不能很好的管理循环引用（下面的代码描述了很多细节）。现在当观察者失效的时候便会被回收，即便listener没有被明确的移除，绝大多数的浏览器可以或者将会支持这个特性。尽管如此，在对象被销毁之前移除观察者依然是一个好的实践。实例如下：</p>
-<blockquote>
-<p>var element = document.getElementById(‘butto’);<br><br>function onClick(event){<br><br>element.innerHtml = ‘text’;<br>}<br><br>element.addEventListener(‘click’,onClick);<br><br>element.removeEventListener(‘click’,onClick);<br>element.parentNode.removeChild(element);//现在当元素超出范围时，元素和onClick函数也将在旧的浏览器不好收集处理周期。</p>
-</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> element = <span class="built_in">document</span>.getElementById(<span class="string">'butto'</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onClick</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">	element.innerHtml = <span class="string">'text'</span>;</span><br><span class="line">&#125;</span><br><span class="line">element.addEventListener(<span class="string">'click'</span>,onClick);</span><br><span class="line">element.removeEventListener(<span class="string">'click'</span>,onClick);</span><br><span class="line">element.parentNode.removeChild(element);<span class="comment">//现在当元素超出范围时，元素和onClick函数也将在旧的浏览器不好收集处理周期。</span></span><br></pre></td></tr></table></figure>
 <p><strong>对象观察者和循环引用中一些需要注意的点</strong></p>
 <p>观察者和循环引用常常会让js开发这踩坑。以前在ie浏览器的回收器上会导致一个bug（或者说是浏览器设计上的问题）。旧版本的ie浏览器不会发现dom节点和js代码之间的循环引用。这是一种观察者的典型情况，观察者通常保留着一个被观察者的引用（正如上述例子中描述的那样）。换句话说，在ie浏览器中，每当一个观察者被添加到一个节点上时，就会发生一次内存泄漏。这也就是开发者在节点或者空的引用被添加到观察者中之前显式移除处理方法的原因。目前现代的浏览器（包括ie和microsoft Edge)都使用了可以发现这些循环引用并正确的处理他们的现代化垃圾回收算法。换言之，严格的讲，废弃一个节点之前调用removeEventListener不再是必要的操作。</p>
 <p>像是jquery这样的框架和库（当使用一些特定的Api的时候）都在废弃一个节点之前移除了listener。他们在内部已经处理了这些事情，并且保证不会产生内存泄漏，即便程序运行在那些问题很多的浏览器中（老版本ie).</p>
 <h2 id="3-dom之外的引用"><a href="#3-dom之外的引用" class="headerlink" title="3.dom之外的引用"></a>3.dom之外的引用</h2><p>有些情况下将dom节点存储到数据结构中会十分有用。假设你想要快速更新一个表格中的几行，如果你把每一行的引用都储存在一个字典或者数组里面会起到很大的作用。如果你这么做了，程序中将会保留同一个节点的两个引用：一个引用存在于dom树中，另一个被保留在字典中。如果未来的某个时刻你决定要将这些行移除，则需要将所有的引用清楚。</p>
 <blockquote>
-<p>var element = {<br><br>button:document.getElementById(‘button’),<br>image:document.getElementById(‘image’),<br>text:document.getElementById(‘text’)<br><br>};<br><br>function doStuff(){<br><br> image.src = “<a href="http://some.url/image" target="_blank" rel="external">http://some.url/image</a>“;<br><br> button.click();<br><br> console.log(text.innerHTML);<br>}<br><br>function removeButton(){<br><br> //这个按钮是body的直接子级<br> document.body.removeChild(document.getElementById(‘button’);<br> //在这一点上，我们仍然有一个参考#按钮在整个字典中。换句话说，按钮元素仍然在内存并且不能收集。<br><br>}</p>
+<p>var element = {<br><br>button:document.getElementById(‘button’),<br>image:document.getElementById(‘image’),<br>text:document.getElementById(‘text’)<br><br>};<br><br>function doStuff(){<br><br> image.src = “<a href="http://some.url/image" target="_blank" rel="noopener">http://some.url/image</a>“;<br><br> button.click();<br><br> console.log(text.innerHTML);<br>}<br><br>function removeButton(){<br><br> //这个按钮是body的直接子级<br> document.body.removeChild(document.getElementById(‘button’);<br> //在这一点上，我们仍然有一个参考#按钮在整个字典中。换句话说，按钮元素仍然在内存并且不能收集。<br><br>}</p>
 </blockquote>
 <p>还需要考虑另一种情况，就是对Dom树子节点的引用。假使你在js代码中保留了一个表格中特定单元格（一个td标签）的引用。在将来你决定将这个表格从DOM中移除，但仍要保留这个单元格的引用。凭直觉，你可能会认为GC会回收除了这个单元格以外的所有的东西，但是实际上这并不会发生：单元格是表格的一个子节点并且子节点都保留着它们父节点的引用。换句话说。js代码中对单元格的引用导致整个表格被保留在内存中。所以当你想要保留DOM元素的引用时，要仔细的考虑清除这一点。</p>
 <h2 id="4-闭包"><a href="#4-闭包" class="headerlink" title="4.闭包"></a>4.闭包</h2><p>js开发中一个重要的内容就是闭包，它是可以获取父级作用域的匿名函数。Meteor的开发者发现在一种特殊情况下有可能会以一种很微妙的方式产生内存泄漏，这取决于js运行时的实现细节。</p>
@@ -207,7 +200,7 @@ function grow(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://muxiaolana.github.io/2017/07/06/js4种内存泄漏陷阱/" data-id="cj7llrpnn0001y13k9moouip4" class="article-share-link">Share</a>
+      <a data-url="http://muxiaolana.github.io/2017/07/06/js4种内存泄漏陷阱/" data-id="cje6if56r000m9m3ktcb23c8c" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -218,19 +211,19 @@ function grow(){
     
 <nav id="article-nav">
   
-    <a href="/2017/07/06/onchange事件与target/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/07/16/原生table的表头固定内容滚动/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          input onchange事件获取事件源实例
+          原生table的表头固定，内容上下滚动
         
       </div>
     </a>
   
   
-    <a href="/2017/06/16/easyui_datagrid/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/07/06/onchange事件与target/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">easyui datagrid的问题</div>
+      <div class="article-nav-title">input onchange事件获取事件源实例</div>
     </a>
   
 </nav>
@@ -246,7 +239,7 @@ function grow(){
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -256,7 +249,7 @@ function grow(){
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2017/">2017</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2017/">2017</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2018/">2018</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/">bootstrap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table/">table</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端分页/">前端分页</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端排序/">前端排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -266,7 +259,7 @@ function grow(){
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/2017/" style="font-size: 10px;">2017</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a>
+      <a href="/tags/2017/" style="font-size: 10px;">2017</a> <a href="/tags/2018/" style="font-size: 10px;">2018</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/table/" style="font-size: 10px;">table</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端分页/" style="font-size: 10px;">前端分页</a> <a href="/tags/前端排序/" style="font-size: 10px;">前端排序</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a>
     </div>
   </div>
 
@@ -275,7 +268,7 @@ function grow(){
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -286,6 +279,10 @@ function grow(){
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/02/27/bootstrap-table的前端排序和分页/">bootstrap-table的前端排序和分页技术</a>
+          </li>
         
           <li>
             <a href="/2018/01/16/2017年终总结/">2017年终总结</a>
@@ -301,10 +298,6 @@ function grow(){
         
           <li>
             <a href="/2017/07/16/原生table的表头固定内容滚动/">原生table的表头固定，内容上下滚动</a>
-          </li>
-        
-          <li>
-            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
           </li>
         
       </ul>

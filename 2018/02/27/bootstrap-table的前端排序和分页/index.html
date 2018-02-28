@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>bootstrap-table的前端排序和分页技术 | 穆小懒</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="理解与认识bootstrap的分页分为前端（客户端）分页和后端（服务端）分页两种，参数设置时，客户端（前端）分页的参数：sidePageination:’client’，服务端（后端）分页的参数sidePagenation:’server’。在数据格式上前端分页(客户端）需要的数据结构必须为[{},{},{}…],服务端需要的数据格式为{total:56,rows:[{},{},{}….]}具备以">
+<meta name="keywords" content="bootstrap,table,2018,前端分页,前端排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bootstrap-table的前端排序和分页技术">
+<meta property="og:url" content="http://muxiaolana.github.io/2018/02/27/bootstrap-table的前端排序和分页/index.html">
+<meta property="og:site_name" content="穆小懒">
+<meta property="og:description" content="理解与认识bootstrap的分页分为前端（客户端）分页和后端（服务端）分页两种，参数设置时，客户端（前端）分页的参数：sidePageination:’client’，服务端（后端）分页的参数sidePagenation:’server’。在数据格式上前端分页(客户端）需要的数据结构必须为[{},{},{}…],服务端需要的数据格式为{total:56,rows:[{},{},{}….]}具备以">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-28T03:32:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bootstrap-table的前端排序和分页技术">
+<meta name="twitter:description" content="理解与认识bootstrap的分页分为前端（客户端）分页和后端（服务端）分页两种，参数设置时，客户端（前端）分页的参数：sidePageination:’client’，服务端（后端）分页的参数sidePagenation:’server’。在数据格式上前端分页(客户端）需要的数据结构必须为[{},{},{}…],服务端需要的数据格式为{total:56,rows:[{},{},{}….]}具备以">
+  
+    <link rel="alternate" href="/atom.xml" title="穆小懒" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">穆小懒</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">穆小懒，最可耐</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://muxiaolana.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-bootstrap-table的前端排序和分页" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/27/bootstrap-table的前端排序和分页/" class="article-date">
+  <time datetime="2018-02-27T15:52:06.000Z" itemprop="datePublished">2018-02-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/年终总结/">年终总结</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      bootstrap-table的前端排序和分页技术
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="理解与认识"><a href="#理解与认识" class="headerlink" title="理解与认识"></a>理解与认识</h3><p>bootstrap的分页分为前端（客户端）分页和后端（服务端）分页两种，参数设置时，客户端（前端）分页的参数：<strong>sidePageination:’client’</strong>，服务端（后端）分页的参数<strong>sidePagenation:’server’</strong>。在<strong>数据格式</strong>上<strong>前端分页(客户端）</strong>需要的数据结构必须为<span style="color:red;font-weight:bold;">[{},{},{}…]</span>,<strong>服务端</strong>需要的数据格式为<span style="color:red;font-weight:bold;">{total:56,rows:[{},{},{}….]}</span>具备以上两个条件，bootstraptable分页就可以正常显示，但是在前端（客户端）分页的时候，后端接口中传过来的数据不一定符合我们的数据格式标准，这就需要我们在ajax（已被框架封装进组件）获取数据完成之后且数据分发之前打印一下数据，查看是否合规。</p>
+<h3 id="分析原理"><a href="#分析原理" class="headerlink" title="分析原理"></a>分析原理</h3><p>ajax完成获取数据并且还未发放数据，这一过程的数据（原始数据）在<strong>responseHander</strong>参数里面能够获取到,<span style="color:red;font-weight:bold;">responseHandler: function(res) {return res}</span>这里的res即为原始数据，打印出来如果res的数据格式符合当前分页（服务器或客户端）的格式则不用做处理，如果不符合则需要进行处理，如下面的例子中，我们做的是前端分页，所需要的格式是<strong>[{},{},{}…]</strong>，而我们打出来的res原始数据格式为<br><strong>{total:56,rows:[{},{},{}….]}</strong>，这就需要我们进行局部截取处理，只保留合法部分：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   responseHander:<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> result = res.rows;</span><br><span class="line">	<span class="keyword">return</span> result;<span class="comment">//在这里result就是我们需要的数据</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>排序，前端排序的基本思想就是通过获取要排序的字段名称和排序方式（asc正序或者desc倒序），对已请求获得的所有数据在发放前进行重新排列，再发放数据使其显示的行为。</p>
+<h3 id="具体实践"><a href="#具体实践" class="headerlink" title="具体实践"></a>具体实践</h3><p>每次点击列表中的某一字段进行排序，相当于是重新查询了一遍数据，所以排序之前先设置了查询的字段规则和排序规则，这一步在<strong>queryParams: function queryParams(params) { }</strong> 获取到，params即为每次进行查询时所有的参数数据，这时候我们打印一下params，因为我们的queryParamsType设置的参数为undefined,所以打印出来的数据包含了sortName和sortOrder即排序名称和排序规则。</p>
+<p>当我们点击某字段的排序按钮我们会看到sortName和sortOrder也在变成我们对应的字段名称和切换排序顺序，换句话说我们每次对列表进行点击排序操作在queryParams: function queryParams(params) { }都能拿到，现在我们有<strong>一个思路就是获取当前的sortName和sortOrder，通过这两项在数据发放前进行数据的重新排列</strong>，首先我们看一下我们要处理的数据，<strong><span style="color:red;font-weight:bold;">res.rows</span></strong>,这个数据格式是[{},{},{}….]，这样我们要对数组中的对象通过对象中的某个属性进行排序，函数如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**根据数组里属性的值的大小进行排序**/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compare</span>(<span class="params">property,type</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(type == <span class="string">'asc'</span>)&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">	        <span class="keyword">var</span> value1 = a[property];</span><br><span class="line">	        <span class="keyword">var</span> value2 = b[property];</span><br><span class="line">	        <span class="keyword">return</span> value1 - value2;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">	        <span class="keyword">var</span> value1 = a[property];</span><br><span class="line">	        <span class="keyword">var</span> value2 = b[property];</span><br><span class="line">	        <span class="keyword">return</span>  value2 - value1;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们要在数据发放之前调用compare函数，也就是在 responseHander:function(res){}里面调用，compare函数的两个参数分别为属性名和排序方式，在第一次加载页面时我们可以规定一个默认的排序名称和排序方法把他们保存在两个全局变量当中，如 var sortName = ‘auditStatus’, sortType = ‘asc’;调用compare(sortName,sortType);当点击了排序按钮时再将获取到的params里面的sortName和sortOrder分别赋给sortName和sortType,即：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sortName = params.sortName;</span><br><span class="line">sortType = params.sortOrder;</span><br></pre></td></tr></table></figure>
+<p>两个全局变量被赋予了新的值，这样每当我们重新点击了排序按钮,列表数据进入新一轮查找重新调用了compare(sortName,sortType);数据就完成了新一轮的排序。全部实现代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sortName = <span class="string">'auditStatus'</span>, sortType = <span class="string">'asc'</span>; </span><br><span class="line"> <span class="comment">/**根据数组里属性的值的大小进行排序**/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compare</span>(<span class="params">property,type</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(type == <span class="string">'asc'</span>)&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">	        <span class="keyword">var</span> value1 = a[property];</span><br><span class="line">	        <span class="keyword">var</span> value2 = b[property];</span><br><span class="line">	        <span class="keyword">return</span> value1 - value2;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">	        <span class="keyword">var</span> value1 = a[property];</span><br><span class="line">	        <span class="keyword">var</span> value2 = b[property];</span><br><span class="line">	        <span class="keyword">return</span>  value2 - value1;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initTable2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    layer.load(<span class="number">1</span>,&#123;<span class="attr">shade</span>: [<span class="number">0.3</span>,<span class="string">'#999'</span>]&#125;);</span><br><span class="line">    <span class="comment">//先销毁表格</span></span><br><span class="line">    $(<span class="string">'#cusTable2'</span>).bootstrapTable(<span class="string">'destroy'</span>);</span><br><span class="line">    <span class="keyword">var</span> url = <span class="string">"&lt;%=basePath%&gt;manage/sys/role/thisCompanyList.do"</span>;</span><br><span class="line">    <span class="comment">//初始化表格,动态从服务器加载数据</span></span><br><span class="line">    $(<span class="string">"#cusTable2"</span>).bootstrapTable(&#123;</span><br><span class="line">        method: <span class="string">"get"</span>,  <span class="comment">//使用get请求到服务器获取数据</span></span><br><span class="line">        url:<span class="string">"&lt;%=basePath%&gt;manage/personal/towaitList.do"</span>,<span class="comment">//获取数据的Servlet地址</span></span><br><span class="line">        dataType: <span class="string">"json"</span>,</span><br><span class="line">        striped: <span class="literal">false</span>,  <span class="comment">//表格显示条纹</span></span><br><span class="line">        locale:<span class="string">'zh-CN'</span>,<span class="comment">//中文支持</span></span><br><span class="line">        pagination: <span class="literal">true</span>, <span class="comment">//启动分页</span></span><br><span class="line">        pageSize: <span class="number">5</span>,  <span class="comment">//每页显示的记录数</span></span><br><span class="line">        pageNumber:<span class="number">1</span>, <span class="comment">//当前第几页</span></span><br><span class="line">        pageList: [<span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">20</span>, <span class="number">25</span>],  <span class="comment">//记录数可选列表</span></span><br><span class="line">        search: <span class="literal">false</span>,  <span class="comment">//是否启用查询</span></span><br><span class="line">        showColumns: <span class="literal">false</span>,  <span class="comment">//显示下拉框勾选要显示的列</span></span><br><span class="line">        showRefresh: <span class="literal">false</span>,  <span class="comment">//显示刷新按钮</span></span><br><span class="line">        showToggle: <span class="literal">false</span>,</span><br><span class="line">        cardView: <span class="literal">false</span>,</span><br><span class="line">        sidePagination: <span class="string">"client"</span>, <span class="comment">//表示客户端请求</span></span><br><span class="line">        responseHandler: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;<span class="comment">//在ajax请求成功后，发放数据之前可以对返回的数据进行处理，返回什么部分的数据</span></span><br><span class="line">            <span class="comment">//res = $.parseJSON(res);</span></span><br><span class="line">            <span class="comment">/* return res; */</span></span><br><span class="line">			<span class="comment">/* var result = res.rows; */</span></span><br><span class="line">        	<span class="keyword">var</span> result = res.rows.sort(compare(sortName2,sortType2));	 	 </span><br><span class="line">        	<span class="comment">/* var newObject = &#123;"total": res.total, "rows": result&#125;; */</span></span><br><span class="line">            <span class="keyword">return</span> result; </span><br><span class="line">        &#125;,</span><br><span class="line">        columns: [</span><br><span class="line">            &#123;</span><br><span class="line">                title: <span class="string">'标的状态'</span>,</span><br><span class="line">                field: <span class="string">'auditStatus'</span>,</span><br><span class="line">                align: <span class="string">'left'</span>,</span><br><span class="line">                formatter:<span class="function"><span class="keyword">function</span>(<span class="params">value,row,index</span>)</span>&#123;</span><br><span class="line">                    <span class="keyword">var</span> e =<span class="string">""</span>;</span><br><span class="line">                    <span class="keyword">if</span>(row.auditStatus==<span class="string">'2'</span>)&#123;</span><br><span class="line">                        e=<span class="string">"催收中"</span>;</span><br><span class="line">                    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(row.auditStatus==<span class="string">'4'</span>)&#123;</span><br><span class="line">                        e=<span class="string">"撤标结案中"</span>;</span><br><span class="line">                    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(row.auditStatus==<span class="string">'5'</span>)&#123;</span><br><span class="line">                        e=<span class="string">"撤标结案"</span>;</span><br><span class="line">                    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(row.auditStatus==<span class="string">'6'</span>)&#123;</span><br><span class="line">                        e=<span class="string">"撤案结案中"</span>;</span><br><span class="line">                    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(row.auditStatus==<span class="string">'7'</span>)&#123;</span><br><span class="line">                        e=<span class="string">"撤案结案"</span>;</span><br><span class="line">                    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(row.auditStatus==<span class="string">'8'</span>)&#123;</span><br><span class="line">                        e=<span class="string">"正常结案中"</span>;</span><br><span class="line">                    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(row.auditStatus==<span class="string">'10'</span>)&#123;</span><br><span class="line">                        e=<span class="string">"正常结案"</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">return</span> e <span class="comment">/*+ d*/</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                title: <span class="string">'标的金额'</span>,</span><br><span class="line">                field: <span class="string">'amount'</span>,</span><br><span class="line">                align: <span class="string">'right'</span>,</span><br><span class="line">                valign: <span class="string">'middle'</span>,</span><br><span class="line">                sortable: <span class="literal">true</span>,</span><br><span class="line">                formatter:<span class="function"><span class="keyword">function</span>(<span class="params">value,row,index</span>)</span>&#123;</span><br><span class="line">                    <span class="keyword">if</span>(value==<span class="string">''</span>||value==<span class="literal">null</span>||value==<span class="literal">undefined</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">var</span> num = (row.amount).toFixed(<span class="number">2</span>);</span><br><span class="line">                    <span class="keyword">var</span> numArr = [];</span><br><span class="line">                    <span class="keyword">if</span>(num.toString().indexOf(<span class="string">'.'</span>)!= <span class="number">-1</span>)&#123;</span><br><span class="line">                        numArr = num.toString().split(<span class="string">'.'</span>);</span><br><span class="line">                        num = numArr[<span class="number">0</span>].replace(<span class="regexp">/(\d&#123;1,3&#125;)(?=(\d&#123;3&#125;)+$)/g</span>,<span class="string">'$1,'</span>) +<span class="string">'.'</span>+numArr[<span class="number">1</span>];</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        num = num.toString().replace(<span class="regexp">/(\d&#123;1,3&#125;)(?=(\d&#123;3&#125;)+$)/g</span>,<span class="string">'$1,'</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">return</span> num;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                title: <span class="string">'分配员工数'</span>,</span><br><span class="line">                field: <span class="string">'allotUserNum'</span>,</span><br><span class="line">                align: <span class="string">'right'</span>,</span><br><span class="line">                valign: <span class="string">'middle'</span>,</span><br><span class="line">                sortable: <span class="literal">true</span>,</span><br><span class="line">                formatter:<span class="function"><span class="keyword">function</span>(<span class="params">value,row,index</span>)</span>&#123;</span><br><span class="line">                    <span class="keyword">if</span>(value==<span class="string">''</span>||value==<span class="literal">null</span>||value==<span class="literal">undefined</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">var</span> num = row.allotUserNum;</span><br><span class="line">                    <span class="keyword">var</span> numArr = [];</span><br><span class="line">                    <span class="keyword">if</span>(num.toString().indexOf(<span class="string">'.'</span>)!= <span class="number">-1</span>)&#123;</span><br><span class="line">                        numArr = num.toString().split(<span class="string">'.'</span>);</span><br><span class="line">                        num = numArr[<span class="number">0</span>].replace(<span class="regexp">/(\d&#123;1,3&#125;)(?=(\d&#123;3&#125;)+$)/g</span>,<span class="string">'$1,'</span>) +<span class="string">'.'</span>+numArr[<span class="number">1</span>];</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        num = num.toString().replace(<span class="regexp">/(\d&#123;1,3&#125;)(?=(\d&#123;3&#125;)+$)/g</span>,<span class="string">'$1,'</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">return</span> num;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        ],</span><br><span class="line">        <span class="comment">//设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder</span></span><br><span class="line">        <span class="comment">//设置为limit可以获取limit, offset, search, sort, order</span></span><br><span class="line">        queryParamsType : <span class="string">"undefined"</span>,</span><br><span class="line">        queryParams: <span class="function"><span class="keyword">function</span> <span class="title">queryParams</span>(<span class="params">params</span>) </span>&#123;   <span class="comment">//设置查询参数</span></span><br><span class="line">            <span class="keyword">var</span> param = &#123;</span><br><span class="line">                pageNumber: params.pageNumber,</span><br><span class="line">                pageSize: params.pageSize</span><br><span class="line">            &#125;;</span><br><span class="line">			<span class="built_in">console</span>.log(params);</span><br><span class="line">            sortName2 = params.sortName;</span><br><span class="line">            sortType2 = params.sortOrder;</span><br><span class="line">            <span class="keyword">return</span> param;</span><br><span class="line">        &#125;,</span><br><span class="line">        onLoadSuccess: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;  <span class="comment">//加载成功时执行</span></span><br><span class="line">            layer.closeAll(<span class="string">'loading'</span>);</span><br><span class="line"></span><br><span class="line">        &#125;,</span><br><span class="line">        onLoadError: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;  <span class="comment">//加载失败时执行</span></span><br><span class="line">            layer.closeAll(<span class="string">'loading'</span>);</span><br><span class="line">            <span class="comment">/* layer.msg("加载数据失败", &#123;time : 1500, icon : 2&#125;); */</span></span><br><span class="line">        &#125;,</span><br><span class="line">        formatLoadingMessage: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">/* layer.msg("请稍等，正在加载中..."); */</span></span><br><span class="line">            layer.load(<span class="number">1</span>,&#123;<span class="attr">shade</span>: [<span class="number">0.3</span>,<span class="string">'#999'</span>]&#125;);</span><br><span class="line">        &#125;,</span><br><span class="line">        formatNoMatches: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  <span class="comment">//没有匹配的结果</span></span><br><span class="line">            layer.closeAll(<span class="string">'loading'</span>);</span><br><span class="line">            layer.msg(<span class="string">'无符合条件的记录'</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://muxiaolana.github.io/2018/02/27/bootstrap-table的前端排序和分页/" data-id="cje6if56600019m3kaufrl4zg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/2018/">2018</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bootstrap/">bootstrap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/table/">table</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端分页/">前端分页</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端排序/">前端排序</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/01/16/2017年终总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">2017年终总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2017/">2017</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2018/">2018</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/">bootstrap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table/">table</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端分页/">前端分页</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端排序/">前端排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/2017/" style="font-size: 10px;">2017</a> <a href="/tags/2018/" style="font-size: 10px;">2018</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/table/" style="font-size: 10px;">table</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端分页/" style="font-size: 10px;">前端分页</a> <a href="/tags/前端排序/" style="font-size: 10px;">前端排序</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/27/bootstrap-table的前端排序和分页/">bootstrap-table的前端排序和分页技术</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/16/2017年终总结/">2017年终总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/26/jquery获取url参数的方法/">jquery获取url以及jquery获取url参数的实现方法</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/16/jquery.extend函数使用/">jquery.extend函数使用详解</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/16/原生table的表头固定内容滚动/">原生table的表头固定，内容上下滚动</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 muxiaolan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

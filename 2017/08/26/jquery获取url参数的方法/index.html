@@ -5,18 +5,18 @@
   
   <title>jquery获取url以及jquery获取url参数的实现方法 | 穆小懒</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.使用jquery获取当前url： window.location.href; (给window.location.href=”XXX” 赋值，即在当前位置打开新页面) 2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数： function getUrlParam(name){     var reg = new RegExp(&amp;quot;(^|&amp;am">
+  <meta name="description" content="1.使用jquery获取当前url： window.location.href; (给window.location.href=”XXX” 赋值，即在当前位置打开新页面) 2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数： 12345function getUrlParam(name)&amp;#123;	var reg = new RegExp(&quot;(^|&amp;a">
 <meta name="keywords" content="前端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="jquery获取url以及jquery获取url参数的实现方法">
 <meta property="og:url" content="http://muxiaolana.github.io/2017/08/26/jquery获取url参数的方法/index.html">
 <meta property="og:site_name" content="穆小懒">
-<meta property="og:description" content="1.使用jquery获取当前url： window.location.href; (给window.location.href=”XXX” 赋值，即在当前位置打开新页面) 2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数： function getUrlParam(name){     var reg = new RegExp(&amp;quot;(^|&amp;am">
+<meta property="og:description" content="1.使用jquery获取当前url： window.location.href; (给window.location.href=”XXX” 赋值，即在当前位置打开新页面) 2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数： 12345function getUrlParam(name)&amp;#123;	var reg = new RegExp(&quot;(^|&amp;a">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-24T09:16:13.000Z">
+<meta property="og:updated_time" content="2018-02-28T03:35:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jquery获取url以及jquery获取url参数的实现方法">
-<meta name="twitter:description" content="1.使用jquery获取当前url： window.location.href; (给window.location.href=”XXX” 赋值，即在当前位置打开新页面) 2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数： function getUrlParam(name){     var reg = new RegExp(&amp;quot;(^|&amp;am">
+<meta name="twitter:description" content="1.使用jquery获取当前url： window.location.href; (给window.location.href=”XXX” 赋值，即在当前位置打开新页面) 2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数： 12345function getUrlParam(name)&amp;#123;	var reg = new RegExp(&quot;(^|&amp;a">
   
     <link rel="alternate" href="/atom.xml" title="穆小懒" type="application/atom+xml">
   
@@ -99,61 +99,27 @@
 <p>window.location.href;</p>
 <p>(给window.location.href=”XXX” 赋值，即在当前位置打开新页面)</p>
 <p>2.jquery获取url参数要用正则表达式，首先看一下单纯的通过js来获取url中的某个参数：</p>
-<pre><code>function getUrlParam(name){
-    var reg = new RegExp(&quot;(^|&amp;)&quot;+ name +&quot;=([^&amp;]*)(&amp;|$)&quot;);//构造一个含有目标参数的正则表达式对象
-    var r = window.location.search.substr(1).match(reg);//匹配目标参数
-    if(r!=null) return unescape(r[2]);return null;//返回参数值
-｝
-</code></pre><p>小知识：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getUrlParam</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> reg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"(^|&amp;)"</span>+ name +<span class="string">"=([^&amp;]*)(&amp;|$)"</span>);<span class="comment">//构造一个含有目标参数的正则表达式对象</span></span><br><span class="line">	<span class="keyword">var</span> r = <span class="built_in">window</span>.location.search.substr(<span class="number">1</span>).match(reg);<span class="comment">//匹配目标参数</span></span><br><span class="line">	<span class="keyword">if</span>(r!=<span class="literal">null</span>) <span class="keyword">return</span> <span class="built_in">unescape</span>(r[<span class="number">2</span>]);<span class="keyword">return</span> <span class="literal">null</span>;<span class="comment">//返回参数值</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>小知识：</p>
 <blockquote>
 <p>unescape(string)方法是用来解码的，与escape(string)相对应<br>unescape()的工作原理是：通过找到形式为%xx和%uxxx的字序列（表示十六进制的数字），用Unicode字符\u00xx和\uxxx替换这样的字符序列进行编码。<br>unescape()和escape()函数已被废除，用decodeURI()和decodeURIComponent()（对编码后的url进行解码，encodeURIComponent是编码）取代</p>
 </blockquote>
 <p>通过这个函数传递url中的参数名就可以获取到参数的值，比如url为：</p>
-<p><a href="http://localhost:33064/WebForm2.aspx?reurl=WebForm1.aspx" target="_blank" rel="external">http://localhost:33064/WebForm2.aspx?reurl=WebForm1.aspx</a></p>
+<p><a href="http://localhost:33064/WebForm2.aspx?reurl=WebForm1.aspx" target="_blank" rel="noopener">http://localhost:33064/WebForm2.aspx?reurl=WebForm1.aspx</a></p>
 <p>我们要获取reurl的值，可以这样写：</p>
-<pre><code>var xxx = getParam(&apos;reurl&apos;);
-</code></pre><p>明白了js获取url的方法我们可以通过这个方法为jquery扩展一个方法来通过jquery获取url参数，下面的代码为jquery扩展了一个getUrlParam()方法</p>
-<pre><code>(function($){
-    $.getUrlParam = function(name){
-        var reg = newRegExp(&quot;(^|&amp;)&quot; + name + &quot;=([^|$]*)&quot;);
-        var r = window.location.search.substr(1).match(reg);
-        if(r != null) return unescape(r[2]); return null;
-    }
-})(jquery)
-</code></pre><p>为jquery拓扩展了方法后我们就可以通过这种方法来获取某个参数的值了：</p>
-<pre><code>var xx= $.getUrlParam(&apos;reurl&apos;);
-</code></pre><p>完整代码：</p>
-<pre><code>&lt;script src=&quot;js/jquery-1.7.2.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-    $(function(){
-        //方法一
-        （function($){
-            $.getUrlParam = function(name){
-                var reg = new RegExp(&quot;()&quot; + name + &quot;&quot;);
-                var r = window.location.search.substr(1).match(reg);
-                if (r != null) return unescape(r[2]); return null;
-            }
-        }）（jquery）；
-        var xx =  $.getUrlParam(&apos;reurl&apos;);
-        alert(xx);            
-    });
-
-    //方法二
-    //获取url中的参数
-    function getUrlParam(name){
-        var reg = new RegExp(&quot;(^|&amp;)&quot; + name + &quot;=([^&amp;]*)(&amp;|$)&quot;);
-        var  r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]); return null;
-    }
-
-
-&lt;/script&gt;
-</code></pre><p>用上面的方法获取url中的参数时，url中传递的中文参数在解析的时候无论怎么测试，获取的都是乱码。经过一番调试后发现，我再传递参数时，对汉字编码使用的是 encodeURI ，而上面的方法在解析参数编码时使用的是unescape ,修改为 decodeURI 就可以了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xxx = getParam(<span class="string">'reurl'</span>);</span><br></pre></td></tr></table></figure>
+<p>明白了js获取url的方法我们可以通过这个方法为jquery扩展一个方法来通过jquery获取url参数，下面的代码为jquery扩展了一个getUrlParam()方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">$</span>)</span>&#123;</span><br><span class="line">	$.getUrlParam = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> reg = newRegExp(<span class="string">"(^|&amp;)"</span> + name + <span class="string">"=([^|$]*)"</span>);</span><br><span class="line">		<span class="keyword">var</span> r = <span class="built_in">window</span>.location.search.substr(<span class="number">1</span>).match(reg);</span><br><span class="line">		<span class="keyword">if</span>(r != <span class="literal">null</span>) <span class="keyword">return</span> <span class="built_in">unescape</span>(r[<span class="number">2</span>]); <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)(jquery)</span><br></pre></td></tr></table></figure>
+<p>为jquery拓扩展了方法后我们就可以通过这种方法来获取某个参数的值了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xx= $.getUrlParam(<span class="string">'reurl'</span>);</span><br></pre></td></tr></table></figure>
+<p>完整代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"js/jquery-1.7.2.min.js"</span> type=<span class="string">"text/javascript"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">	$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="comment">//方法一</span></span><br><span class="line">		（<span class="function"><span class="keyword">function</span>(<span class="params">$</span>)</span>&#123;</span><br><span class="line">			$.getUrlParam = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">				<span class="keyword">var</span> reg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"()"</span> + name + <span class="string">""</span>);</span><br><span class="line">				<span class="keyword">var</span> r = <span class="built_in">window</span>.location.search.substr(<span class="number">1</span>).match(reg);</span><br><span class="line">				<span class="keyword">if</span> (r != <span class="literal">null</span>) <span class="keyword">return</span> <span class="built_in">unescape</span>(r[<span class="number">2</span>]); <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;）（jquery）；</span><br><span class="line">		<span class="keyword">var</span> xx =  $.getUrlParam(<span class="string">'reurl'</span>);</span><br><span class="line">		alert(xx);			</span><br><span class="line">	&#125;);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//方法二</span></span><br><span class="line">	<span class="comment">//获取url中的参数</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">getUrlParam</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> reg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"(^|&amp;)"</span> + name + <span class="string">"=([^&amp;]*)(&amp;|$)"</span>);</span><br><span class="line">		<span class="keyword">var</span>  r = <span class="built_in">window</span>.location.search.substr(<span class="number">1</span>).match(reg);</span><br><span class="line">		<span class="keyword">if</span> (r != <span class="literal">null</span>) <span class="keyword">return</span> <span class="built_in">unescape</span>(r[<span class="number">2</span>]); <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>用上面的方法获取url中的参数时，url中传递的中文参数在解析的时候无论怎么测试，获取的都是乱码。经过一番调试后发现，我再传递参数时，对汉字编码使用的是 encodeURI ，而上面的方法在解析参数编码时使用的是unescape ,修改为 decodeURI 就可以了。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://muxiaolana.github.io/2017/08/26/jquery获取url参数的方法/" data-id="cj7llrpnw000ay13kd1o1tyu9" class="article-share-link">Share</a>
+      <a data-url="http://muxiaolana.github.io/2017/08/26/jquery获取url参数的方法/" data-id="cje6if56h00099m3kzo94a1mu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
@@ -192,7 +158,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/学习总结/">学习总结</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/年终总结/">年终总结</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -202,7 +168,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2017/">2017</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2017/">2017</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2018/">2018</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootstrap/">bootstrap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/table/">table</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端分页/">前端分页</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端排序/">前端排序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -212,7 +178,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/2017/" style="font-size: 10px;">2017</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a>
+      <a href="/tags/2017/" style="font-size: 10px;">2017</a> <a href="/tags/2018/" style="font-size: 10px;">2018</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/table/" style="font-size: 10px;">table</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端分页/" style="font-size: 10px;">前端分页</a> <a href="/tags/前端排序/" style="font-size: 10px;">前端排序</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a>
     </div>
   </div>
 
@@ -221,7 +187,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -232,6 +198,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/02/27/bootstrap-table的前端排序和分页/">bootstrap-table的前端排序和分页技术</a>
+          </li>
         
           <li>
             <a href="/2018/01/16/2017年终总结/">2017年终总结</a>
@@ -247,10 +217,6 @@
         
           <li>
             <a href="/2017/07/16/原生table的表头固定内容滚动/">原生table的表头固定，内容上下滚动</a>
-          </li>
-        
-          <li>
-            <a href="/2017/07/06/onchange事件与target/">input onchange事件获取事件源实例</a>
           </li>
         
       </ul>
